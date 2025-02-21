@@ -1,0 +1,96 @@
+/* Styl dla overlay modala */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Styl dla samego modala */
+.modal {
+    background-color: #1e1e1e;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    width: 300px;
+    text-align: center;
+}
+
+.modal h3 {
+    margin-bottom: 20px;
+    color: #ffffff;
+}
+
+.modal input {
+    width: calc(100% - 20px);
+    /* Uwzględniamy padding */
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #555;
+    border-radius: 5px;
+    background-color: #333;
+    color: #ffffff;
+    font-size: 16px;
+}
+
+.modal input::placeholder {
+    color: #888;
+}
+
+.modal-buttons {
+    display: flex;
+    justify-content: center;
+    /* Przyciski wyśrodkowane w poziomie */
+    gap: 10px;
+    /* Odstęp między przyciskami */
+}
+
+.modal-buttons button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+    width: 110px;
+    /* Stała szerokość przycisków */
+}
+
+.modal-buttons button:first-child {
+    background-color: #555;
+    color: #ffffff;
+}
+
+.modal-buttons button:first-child:hover {
+    background-color: #777;
+}
+
+.modal-buttons button:last-child {
+    background-color: #007bff;
+    color: #ffffff;
+}
+
+.modal-buttons button:last-child:hover {
+    background-color: #0056b3;
+}
+
+.modal-buttons button:disabled {
+    background-color: #444;
+    cursor: not-allowed;
+}
+
+.button-icon {
+    width: 16px;
+    height: 16px;
+    margin-right: 8px;
+    /* Odstęp między ikoną a tekstem */
+    color: inherit;
+    /* Ikona dziedziczy kolor tekstu przycisku */

@@ -1,35 +1,47 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React, { useState } from 'react';
+import './App.css';
+import HD44780Character from './components/HD44780Character';
+import CharNameModal from './components/CharNameModal'; // Import nowego komponentu
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // Obsługa otwarcia modala
+  const handleCreateNewChar = () => {
+    setIsModalOpen(true);
+  };
+
+  // Obsługa zamknięcia modala
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
+  // Obsługa zapisywania nowego znaku
+  const handleSaveChar = (charName) => {
+    console.log("Nowy znak:", charName); // Tymczasowo logujemy nazwę
+    handleCloseModal();
+  };
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
+    <div className="app-container">
+      <div className="left-column">
+        <button className="create-new-char-button" onClick={handleCreateNewChar}>
+          Create New Char
         </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
+        <HD44780Character />
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+      <div className="right-column">
+        {/* Tutaj będzie prawa kolumna */}
+      </div>
+
+      {/* Użycie komponentu CharNameModal */}
+      <CharNameModal
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        onSave={handleSaveChar}
+      />
+    </div>
+  );
 }
 
-export default App
+export default App;
