@@ -1,14 +1,17 @@
 .hd44780-character {
-    margin-top: 20px;
+    margin-top: 10px;
+    /* margin-bottom: 20px; */
     color: #ffffff;
     /* Biały tekst */
     text-align: center;
     /* Wyśrodkowanie tekstu */
+    /* background-color: #333;
+    border-radius: 5px; */
 }
 
 .hd44780-character h3 {
-    margin-bottom: 10px;
-    font-size: 18px;
+    margin-bottom: 5px;
+    font-size: 16px;
 }
 
 .pixel-grid {
@@ -17,6 +20,27 @@
     gap: 2px;
     align-items: center;
     /* Wyśrodkowanie siatki pikseli */
+}
+
+.pixel-grid-button {
+    width: 100%;
+    padding: 10px;
+    background-color: #333;
+    /* Ciemny kolor tła przycisku */
+    color: #ffffff;
+    /* Biały kolor tekstu */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+    margin-top:10px;
+    /* Efekt przejścia */
+}
+
+.pixel-grid-button:hover {
+    background-color: #555;
+    /* Jaśniejszy odcień po najechaniu */
 }
 
 .pixel-row {
@@ -43,4 +67,11 @@
 .pixel:hover {
     background-color: #b0b0b0;
     /* Jaśniejszy odcień po najechaniu */
+}
+
+
+
+.hd44780-character.inactive {
+    opacity: 0.5;
+    pointer-events: none;
 }

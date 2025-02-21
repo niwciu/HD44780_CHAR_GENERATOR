@@ -1,21 +1,26 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './HD44780Character.css';
 
-const HD44780Character = () => {
-    const [pixels, setPixels] = useState(
-        Array(8).fill().map(() => Array(5).fill(false))
-    );
+const HD44780Character = ({ isActive, pixels, onUpdatePixels }) => {
+    const [localPixels, setLocalPixels] = useState(pixels);
     const [isDrawing, setIsDrawing] = useState(false);
     const [lastChangedPixel, setLastChangedPixel] = useState(null); // Ostatnio zmieniony piksel
 
-    // Funkcja do przełączania stanu piksela (niemutująca)
+    useEffect(() => {
+        setLocalPixels(pixels);
+    }, [pixels]);
+
     const togglePixel = (row, col) => {
-        setPixels((prevPixels) => {
-            const newPixels = prevPixels.map((r) => [...r]); // Tworzymy nową tablicę
-            newPixels[row][col] = !newPixels[row][col]; // Przełączamy stan piksela
-            return newPixels;
-        });
+        if (!isActive) return;
+        const newPixels = localPixels.map((r, rIndex) =>
+            r.map((pixel, cIndex) =>
+                rIndex === row && cIndex === col ? !pixel : pixel
+            )
+        );
+        setLocalPixels(newPixels);
+        onUpdatePixels(newPixels);
     };
+
 
     // Obsługa rozpoczęcia "malowania"
     const handleMouseDown = (row, col) => {
@@ -46,11 +51,17 @@ const HD44780Character = () => {
         setLastChangedPixel(null); // Resetujemy ostatnio zmieniony piksel
     };
 
+    const clearAllPixels = () => {
+        const clearedPixels = localPixels.map(row => row.map(() => false));
+        setLocalPixels(clearedPixels);
+        onUpdatePixels(clearedPixels);
+    }
+
     return (
-        <div className="hd44780-character">
-            <h3>Projektowanie znaku HD44780</h3>
+        <div className={`hd44780-character ${!isActive ? 'inactive' : ''}`}>
+            <h3>HD44780 Char Designer</h3>
             <div className="pixel-grid">
-                {pixels.map((row, rowIndex) => (
+                {localPixels.map((row, rowIndex) => (
                     <div key={rowIndex} className="pixel-row">
                         {row.map((pixel, colIndex) => (
                             <div
@@ -59,12 +70,15 @@ const HD44780Character = () => {
                                 onMouseDown={() => handleMouseDown(rowIndex, colIndex)}
                                 onMouseUp={handleMouseUp}
                                 onMouseMove={(event) => handleMouseMove(rowIndex, colIndex, event)}
-                                onMouseLeave={handleMouseLeave} // Obsługa opuszczenia piksela
+                                onMouseLeave={handleMouseLeave}
                             />
                         ))}
                     </div>
                 ))}
             </div>
+            <button className="pixel-grid-button"  onClick={clearAllPixels}>
+                Clear Pixel Matrix
+            </button>
         </div>
     );
 };
