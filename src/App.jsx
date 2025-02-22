@@ -195,6 +195,19 @@ function App() {
     setSelectedBankChar(null); // Dodaj resetowanie stanu
   };
 
+  const handleResetAll = () => {
+    handleDeleteAllBanks();
+    handleDeleteAll('global');
+    handleDeleteAll('bank');
+  };
+
+  const handleWriteConfigToFile = () => {
+    
+  };
+  const handleSaveConfigToFile = () => {
+
+  };
+
   return (
     <div className="app-container">
       <div className="left-column">
@@ -229,12 +242,6 @@ function App() {
             onDeleteSelected={(index) => handleDeleteItem('global', index)}
             onDeleteAll={() => handleDeleteAll('global')}
           />
-          {/* <button
-            className="add-char-to-bank-button"
-            onClick={handleAddCharToBank}
-          >
-            >
-          </button> */}
           <div className="tooltip-container">
             <button
               className="add-char-to-bank-button"
@@ -267,11 +274,21 @@ function App() {
           />
         </div>
         <div className="left-column-row">
+          <button className="create-new-char-button" onClick={handleSaveConfigToFile}>
+            Save conf
+          </button>
+          <button className="create-new-char-button" onClick={handleWriteConfigToFile}>
+            Load conf
+          </button>
+          <button className="create-new-char-button" onClick={handleResetAll}>
+            Reset all
+          </button>
         </div>
         <div className="left-column-row">
-
+          <button className="create-new-char-button" onClick={handleCreateNewChar}>
+            Copy char from application special characters base
+          </button>
         </div>
-        
       </div>
       <div className="right-column">
         {/* Tutaj będzie prawa kolumna */}

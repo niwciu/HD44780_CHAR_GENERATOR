@@ -37,8 +37,8 @@ html {
   flex-direction: row;
   gap: 10px;
   justify-content:space-around;
+  padding-bottom:10px;
 }
-
 
 .right-column {
   flex: 1;
@@ -86,8 +86,7 @@ html {
   padding-left:15px;
   width: 40px;
   height: 40px;
-  align-self: center;
-  background-color: #333;
+    background-color: #333;
   /* Ciemny kolor tła przycisku */
   color: #ffffff;
   /* Biały kolor tekstu */
