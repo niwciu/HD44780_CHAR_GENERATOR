@@ -162,6 +162,9 @@ function App() {
         ...bank,
         characters: []
       })));
+      // Resetuj wszystkie powiązane stany
+      setSelectedChar(null);
+      setSelectedBankChar(null);
     }
     else if (type === 'bank' && selectedBank !== null) {
       setBanks(prevBanks => prevBanks.map((bank, i) => {
@@ -170,6 +173,7 @@ function App() {
         }
         return bank;
       }));
+      setSelectedBankChar(null);
     }
   };
 
@@ -188,7 +192,7 @@ function App() {
   const handleDeleteAllBanks = () => {
     setBanks([]);
     setSelectedBank(null);
-    setSelectedBankChar(null);
+    setSelectedBankChar(null); // Dodaj resetowanie stanu
   };
 
   return (
@@ -249,10 +253,12 @@ function App() {
           <CharList
             title={'Selected Bank Chars'}
             chars={
-              selectedBank !== null
-                ? banks[selectedBank].characters.map(charIndex => chars[charIndex])
+              selectedBank !== null && banks[selectedBank]
+                ? banks[selectedBank].characters
+                  .filter(charIndex => charIndex < chars.length) // Dodaj filtr
+                  .map(charIndex => chars[charIndex])
                 : []
-            }
+            } 
             onSelectChar={handleSelectBankChar}
             selectedChar={selectedBankChar}
             onDeleteSelected={(index) => handleDeleteItem('bank', index)}

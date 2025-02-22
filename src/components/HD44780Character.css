@@ -117,3 +117,14 @@
 .hd44780-character.inactive:hover::after {
     opacity: 1;
 }
+
+.hd44780-character.error {
+    border: 2px solid #ff4444;
+    padding: 15px;
+}
+
+.error-message {
+    color: #ff4444;
+    font-weight: bold;
+    margin-top: 10px;
+}

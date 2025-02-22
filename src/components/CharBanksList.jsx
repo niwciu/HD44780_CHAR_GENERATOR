@@ -19,7 +19,7 @@ const CharBanksList = ({
                     <ul>
                         {banks.map((bank, index) => (
                             <li
-                                key={index}
+                                key={`bank-${index}`}
                                 className={selectedBank === index ? 'selected' : ''}
                                 onClick={() => onSelectBank(index)}
                             >
