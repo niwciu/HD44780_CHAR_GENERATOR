@@ -57,9 +57,15 @@ const HD44780Character = ({ isActive, pixels, onUpdatePixels }) => {
         onUpdatePixels(clearedPixels);
     }
 
+    const invertAllPixels = () => {
+        const invertedPixels = localPixels.map(row => row.map(pixel => !pixel));
+        setLocalPixels(invertedPixels);
+        onUpdatePixels(invertedPixels);
+    }
+
     return (
         <div className={`hd44780-character ${!isActive ? 'inactive' : ''}`}>
-            <h3>HD44780 Char Designer</h3>
+            {/* <h3>HD44780 Char Designer</h3> */}
             <div className="pixel-grid">
                 {localPixels.map((row, rowIndex) => (
                     <div key={rowIndex} className="pixel-row">
@@ -76,9 +82,14 @@ const HD44780Character = ({ isActive, pixels, onUpdatePixels }) => {
                     </div>
                 ))}
             </div>
-            <button className="pixel-grid-button"  onClick={clearAllPixels}>
-                Clear Pixel Matrix
-            </button>
+            <div className="pixel-grid-func-buttons">
+                <button className="pixel-grid-button"  onClick={clearAllPixels}>
+                    Clear
+                </button>
+                <button className="pixel-grid-button" onClick={invertAllPixels}>
+                    Invert
+                </button>
+            </div>
         </div>
     );
 };

@@ -1,59 +1,60 @@
-.char-list-containter {
+.bank-list-containter {
     margin-top: 10px;
     color: #ffffff;
-    width: 100%;
+    width: 50%;
+    height: 100%;
     /* background-color: #333; */
     /* border-radius: 5px; */
     /* max-height: 200px; */
     /* overflow-y: auto; */
 }
 
-.char-list {
-    margin-top: 10px;
+.bank-list {
+    /* margin-top: 10px; */
     color: #ffffff;
     width: 100%;
     background-color: #333;
     border-radius: 5px;
-    max-height: 220px;
-    min-height: 220px;
+    max-height: 190px;
+    min-height: 190px;
     overflow-y: auto;
 }
 
-.char-list-containter h3 {
+.bank-list-containter h3 {
     margin-bottom: 0px;
     font-size: 16px;
     text-align: center;
 }
 
-.char-list ul {
+.bank-list ul {
     list-style-type: none;
-    margin-top:5px;
+    margin-top: 5px;
     background-color: transparent;
     padding-left: 10px;
     padding-right: 10px;
+
 }
 
-.char-list li {
+.bank-list li {
     padding: 2px;
     padding-left: 7px;
-    padding-bottom: 2px;
     background-color: #333;
     /* margin-bottom: 3px;
     border-radius: 3px; */
-    cursor: pointer;    
+    cursor: pointer;
     transition: background-color 0.3s ease;
     font-size: 14px;
 }
 
-.char-list li:hover {
+.bank-list li:hover {
     background-color: #555;
 }
 
-.char-list li.selected {
+.bank-list li.selected {
     background-color: #007bff;
 }
 
-.char-list-buttons-row {
+.bank-list-buttons-row {
     width: 100%;
     background-color: transparent;
     display: flex;
@@ -61,7 +62,7 @@
     gap: 5px;
 }
 
-.char-list-button {
+.bank-list-button {
     width: 100%;
     padding: 5px;
     background-color: #333;
@@ -73,11 +74,11 @@
     cursor: pointer;
     font-size: 14px;
     transition: background-color 0.3s ease;
-    margin-top: 8px;
+    margin-top: 10px;
     /* Efekt przejścia */
 }
 
-.char-list-button:hover {
+.bank-list-button:hover {
     background-color: #555;
     /* Jaśniejszy odcień po najechaniu */
 }

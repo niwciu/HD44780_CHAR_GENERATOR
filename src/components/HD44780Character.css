@@ -7,6 +7,8 @@
     /* Wyśrodkowanie tekstu */
     /* background-color: #333;
     border-radius: 5px; */
+    width: 50%;
+    height: 100%;
 }
 
 .hd44780-character h3 {
@@ -22,9 +24,19 @@
     /* Wyśrodkowanie siatki pikseli */
 }
 
+.pixel-grid-func-buttons {
+    width: 100%;
+    background-color: transparent;
+    display: flex;
+    flex-direction: row;
+    gap:10px;
+    justify-content: center;
+}
+
 .pixel-grid-button {
     width: 100%;
-    padding: 10px;
+    max-width: 70px;
+    padding: 5px;
     background-color: #333;
     /* Ciemny kolor tła przycisku */
     color: #ffffff;
@@ -69,9 +81,39 @@
     /* Jaśniejszy odcień po najechaniu */
 }
 
-
-
 .hd44780-character.inactive {
     opacity: 0.5;
+    position: relative;
+    /* Dla tooltipa */
+}
+
+.hd44780-character.inactive .pixel-grid {
     pointer-events: none;
+    /* Blokuje rysowanie na pikselach, ale nie tooltip */
+}
+.hd44780-character.inactive .pixel-grid-func-buttons {
+    pointer-events: none;
+    /* Blokuje rysowanie na pikselach, ale nie tooltip */
+}
+
+.hd44780-character.inactive::after {
+    content: "Select a character to edit!";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 8px 12px;
+    border-radius: 5px;
+    font-size: 14px;
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+    /* Zapobiega blokowaniu interakcji pod tooltipem */
+}
+
+.hd44780-character.inactive:hover::after {
+    opacity: 1;
 }

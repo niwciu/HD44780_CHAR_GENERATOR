@@ -16,7 +16,7 @@ html {
 }
 
 .left-column {
-  width: 200px;
+  width: 400px;
   /* Szerokość lewej kolumny */
   background-color: #1e1e1e;
   /* Ciemne tło dla lewej kolumny */
@@ -28,6 +28,17 @@ html {
   align-items: center;
   /* Wyśrodkowanie zawartości w poziomie */
 }
+
+.left-column-row { 
+  width: 100%;
+  height:fit-content;
+  background-color: transparent;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  justify-content:space-around;
+}
+
 
 .right-column {
   flex: 1;
@@ -57,10 +68,6 @@ html {
 }
 
 
-
-
-/* Reszta stylów pozostaje bez zmian */
-
 /* Styl dla overlay modala */
 .modal-overlay {
   position: fixed;
@@ -74,3 +81,63 @@ html {
   align-items: center;
 }
 
+
+.add-char-to-bank-button {
+  padding-left:15px;
+  width: 40px;
+  height: 40px;
+  align-self: center;
+  background-color: #333;
+  /* Ciemny kolor tła przycisku */
+  color: #ffffff;
+  /* Biały kolor tekstu */
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+  /* Efekt przejścia */
+}
+
+.add-char-to-bank-button:hover:not(:disabled) {
+  background-color: #555;
+}
+
+.tooltip-container {
+  position: relative;
+  display: inline-block;
+  margin-top: 20px;
+  align-self: center;
+}
+
+.tooltip-text {
+  visibility: hidden;
+  width: 160px;
+  background-color: #555;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 8px;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%;
+  left: 50%;
+  margin-left: -80px;
+  opacity: 0;
+  transition: opacity 0.3s;
+  white-space: pre-wrap;
+}
+
+.tooltip-container:hover .tooltip-text {
+  visibility: visible;
+  opacity: 1;
+}
+
+.add-char-to-bank-button:disabled {
+  background-color: #888;
+  cursor: not-allowed;
+}
+
+.add-char-to-bank-button:disabled:hover {
+  background-color: #888;
+}
