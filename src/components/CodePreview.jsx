@@ -1,13 +1,13 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
 import { Clipboard, Download } from "lucide-react";
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import vscDarkPlus from "react-syntax-highlighter/dist/cjs/styles/prism/vsc-dark-plus";
+import { Highlight, themes } from "prism-react-renderer";
+// import theme from "prism-react-renderer/themes/vsDark"; // Oficjalny import motywu
 import "./CodePreview.css";
 
 const CodePreview = ({ code, fileName }) => {
     const [copied, setCopied] = useState(false);
-    const [isExpanded, setIsExpanded] = useState(false);
+    // const theme = require('prism-react-renderer').themes.github
 
     const handleCopyCode = () => {
         navigator.clipboard.writeText(code).then(() => {
@@ -16,8 +16,6 @@ const CodePreview = ({ code, fileName }) => {
         });
     };
 
-    const previewCode = code;
-    
     const handleDownloadFile = () => {
         const blob = new Blob([code], { type: 'text/plain' });
         const link = document.createElement('a');
@@ -49,25 +47,51 @@ const CodePreview = ({ code, fileName }) => {
             </div>
 
             <div className="code-content-wrapper">
-                <div className="code-scroll-container">
-                    <SyntaxHighlighter
-                        language="c"
-                        style={vscDarkPlus}
-                        showLineNumbers
-                        customStyle={{
-                            margin: 0,
-                            padding: "1rem", // Używamy jednostek względnych
-                            background: "#1e1e1e",
-                            borderRadius: "4px",
-                            overflowX: "auto", // Dodajemy przewijanie w poziomie
-                            fontSize: "1rem", // Używamy jednostek względnych
-                            width: "100%", // Pełna szerokość kontenera
-                            maxWidth: "100%", // Maksymalna szerokość
-                        }}
-                    >
-                        {previewCode}
-                    </SyntaxHighlighter>
-                </div>
+                <Highlight
+                    code={code}
+                    language="c"
+                    theme={themes.vsDark}
+                >
+                    {({ className, style, tokens, getLineProps, getTokenProps }) => (
+                        <pre
+                            className={className}
+                            style={{
+                                ...style,
+                                background: "#1e1e1e",
+                                padding: "2vh",
+                                borderRadius: "2vh",
+                                overflowX: "auto",
+                                fontSize: "1.9vh",
+                                lineHeight: "1.5",
+                                margin: 0,
+                            }}
+                        >
+                            {tokens.map((line, i) => (
+                                <div key={i} {...getLineProps({ line, key: i })}>
+                                    {/* Numer linii */}
+                                    <span
+                                        style={{
+                                            display: "inline-block",
+                                            width: "2em",
+                                            userSelect: "none",
+                                            opacity: 0.5,
+                                            paddingRight: "1em",
+                                            color: "#858585",
+                                            textAlign: "right"
+                                        }}
+                                    >
+                                        {i + 1}
+                                    </span>
+
+                                    {/* Zawartość linii */}
+                                    {line.map((token, key) => (
+                                        <span key={key} {...getTokenProps({ token, key })} />
+                                    ))}
+                                </div>
+                            ))}
+                        </pre>
+                    )}
+                </Highlight>
             </div>
         </div>
     );
@@ -75,7 +99,7 @@ const CodePreview = ({ code, fileName }) => {
 
 CodePreview.propTypes = {
     code: PropTypes.string.isRequired,
-    fileName: PropTypes.string
+    fileName: PropTypes.string,
 };
 
 export default CodePreview;

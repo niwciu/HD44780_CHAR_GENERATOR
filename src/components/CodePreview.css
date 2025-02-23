@@ -4,12 +4,12 @@
     /* Użyj jednostki względnej dla zaokrąglenia */
     box-shadow: 0 0.2vw 0.8vw rgba(0, 0, 0, 0.3);
     /* Użyj jednostki względnej dla cienia */
-    margin: 1.3vw;
+    margin: 1.5vw;
     /* Użyj jednostki względnej dla marginesu */
     overflow: hidden;
     /* flex: 1 1 auto; */
     /* Elastyczne dopasowanie do kontenera */
-    max-height: 90vh;
+    max-height: 95vh;
     /* Minimalna wysokość względem viewportu */
     display: flex;
     flex-direction: column;
@@ -68,12 +68,6 @@
     /* Rozciąga się, aby wypełnić dostępną przestrzeń */
     display: flex;
     flex-direction: column;
+    max-height: 80vh;
 }
 
-.code-scroll-container {
-    margin: 1.2vw;
-    /* Użyj jednostki względnej dla marginesu */
-    flex: 1;
-    /* Rozciąga się, aby wypełnić dostępną przestrzeń */
-    overflow-y: auto;
-}
