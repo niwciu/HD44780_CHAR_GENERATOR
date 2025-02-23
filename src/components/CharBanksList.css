@@ -1,49 +1,47 @@
 .bank-list-containter {
-    /* margin-top: 10px; */
     color: #ffffff;
     width: 50%;
+    /* Można zmienić na jednostkę względną, np. 50vw */
     height: 100%;
-    /* background-color: #333; */
-    /* border-radius: 5px; */
-    /* max-height: 200px; */
-    /* overflow-y: auto; */
+    display: flex;
+    flex-direction: column;
+    /* Włącz Flexbox */
+    justify-content: center;
+    /* Wyśrodkuj w poziomie */
+    align-items: center;
+    /* Wyśrodkuj w pionie */
 }
 
 .bank-list {
-    /* margin-top: 10px; */
     color: #ffffff;
-    width: 100%;
+    width: 90%;
     background-color: #333;
-    border-radius: 5px;
-    max-height: 190px;
-    min-height: 190px;
+    border-radius: 0.5vw;
+    height: 12.4vw;
     overflow-y: auto;
-}
-
-.bank-list-containter h3 {
-    margin-bottom: 0px;
-    font-size: 16px;
-    text-align: center;
 }
 
 .bank-list ul {
     list-style-type: none;
-    margin-top: 5px;
+    margin-top: 0.5vw;
+    /* Użyj jednostki względnej dla marginesu */
     background-color: transparent;
-    padding-left: 10px;
-    padding-right: 10px;
-
+    padding-left: 1vw;
+    /* Użyj jednostki względnej dla paddingu */
+    padding-right: 1vw;
+    /* Użyj jednostki względnej dla paddingu */
 }
 
 .bank-list li {
-    padding: 2px;
-    padding-left: 7px;
+    padding: 0.2vw;
+    /* Użyj jednostki względnej dla paddingu */
+    padding-left: 0.3vw;
+    /* Użyj jednostki względnej dla paddingu */
     background-color: #333;
-    /* margin-bottom: 3px;
-    border-radius: 3px; */
     cursor: pointer;
     transition: background-color 0.3s ease;
-    font-size: 14px;
+    font-size: 0.9vw;
+    /* Użyj jednostki względnej dla rozmiaru czcionki */
 }
 
 .bank-list li:hover {
@@ -59,36 +57,49 @@
     background-color: transparent;
     display: flex;
     flex-direction: row;
-    gap: 5px;
+    gap: 0.3vw;
+    /* Użyj jednostki względnej dla odstępów */
+    justify-content: center;
 }
 
 .bank-list-button {
     width: 100%;
-    padding: 5px;
+    max-width: 10vw;
+    /* Użyj jednostki względnej dla szerokości */
+    max-height: 2vw;
+    /* Użyj jednostki względnej dla wysokości */
+    padding: 0.3vw;
+    /* Użyj jednostki względnej dla paddingu */
     background-color: #333;
-    /* Ciemny kolor tła przycisku */
     color: #ffffff;
-    /* Biały kolor tekstu */
     border: none;
-    border-radius: 5px;
+    border-radius: 0.5vw;
+    /* Użyj jednostki względnej dla zaokrąglenia */
     cursor: pointer;
-    font-size: 14px;
+    font-size: 0.9vw;
+    /* Użyj jednostki względnej dla rozmiaru czcionki */
     transition: background-color 0.3s ease;
-    margin-top: 10px;
-    /* Efekt przejścia */
+    margin-top: 1vw;
+    /* margin-left: 0.3vw;
+    margin-right: 0.3vw; */
+    /* Użyj jednostki względnej dla marginesu */
 }
 
 .bank-list-button:hover {
     background-color: #555;
-    /* Jaśniejszy odcień po najechaniu */
 }
 
 .hint-message {
-    padding: 1rem;
+    padding: 1vw;
+    /* Użyj jednostki względnej dla paddingu */
     color: #666;
     font-style: italic;
     text-align: center;
     border: 1px dashed #ccc;
-    border-radius: 4px;
-    margin: 10px;
+    border-radius: 0.4vw;
+    /* Użyj jednostki względnej dla zaokrąglenia */
+    margin: 1vw;
+    /* Użyj jednostki względnej dla marginesu */
+    font-size: 0.9vw;
+    /* Użyj jednostki względnej dla rozmiaru czcionki */
 }

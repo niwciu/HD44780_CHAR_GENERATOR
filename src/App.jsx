@@ -5,17 +5,17 @@ import CharNameModal from './components/CharNameModal';
 import BankNameModal from './components/BankNameModal';
 import CharList from './components/CharList'; // Nowy komponent
 import CharBanksList from './components/CharBanksList'; // Nowy komponent
+import CodePreview from './components/CodePreview';
 
 function App() {
   const [isCharModalOpen, setisCharModalOpen] = useState(false);
   const [chars, setChars] = useState([]); // Lista stworzonych znaków
   const [selectedChar, setSelectedChar] = useState(null); // Aktualnie wybrany znak
-
   const [isBankModalOpen, setisBankModalOpen] = useState(false);
   const [banks, setBanks] = useState([]); // Lista stworzonych bankow
   const [selectedBank, setSelectedBank] = useState(null); // Aktualnie wybrany znak
-
   const [selectedBankChar, setSelectedBankChar] = useState(null); // Aktualnie wybrany znak w banku
+  const [generatedCode, setGeneratedCode] = useState("#include \"test.h\"\n static void test (void) \nstatic void test (void) \nstatic void test (void) \nstatic void test (void) \nstatic void test (void) \nstatic void test (void) \nstatic void test (void) \nstatic void test (void) \nstatic void test (void) \nstatic void test (void) \nstatic void test (void) \nstatic void test (void) \nstatic void test (void) \nstatic void test (void) \nstatic void test (void) \nstatic void test (void) \nstatic void test (void) \nstatic void test (void) \nstatic void test (void) \nstatic void test (void) \nstatic void test (void) \nstatic void test (void) \nstatic void test (void) \nstatic void test (void) \nstatic void test (void) \nstatic void test (void) \nstatic void test (void) \nstatic void test (void) \nstatic void test (void) \nstatic void test (void) \nstatic void test (void) \nstatic void test (void) \nstatic void test (void) \nstatic void test (void) \nstatic void test (void) \nstatic void test (void) \nstatic void test (void) \nstatic void test (void) \nstatic void test (void) \nstatic void test (void) \n");
 
   const handleCreateNewChar = () => {
     setisCharModalOpen(true);
@@ -305,6 +305,7 @@ function App() {
     input.click();
   };
 
+
   return (
     <div className="app-container">
       <div className="left-column">
@@ -339,7 +340,7 @@ function App() {
             onDeleteSelected={(index) => handleDeleteItem('global', index)}
             onDeleteAll={() => handleDeleteAll('global')}
           />
-          <div className="tooltip-container">
+          <div className="add-char-to-bank-button-container ">
             <button
               className="add-char-to-bank-button"
               onClick={handleAddCharToBank}
@@ -388,7 +389,7 @@ function App() {
         </div>
       </div>
       <div className="right-column">
-        {/* Tutaj będzie prawa kolumna */}
+        <CodePreview code={generatedCode} fileName="lcd_hd44780_def_char.h" />
       </div>
 
       <CharNameModal

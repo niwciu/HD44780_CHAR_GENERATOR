@@ -1,53 +1,46 @@
 .hd44780-character {
-    /* margin-top: 10px; */
-    /* margin-bottom: 20px; */
     color: #ffffff;
-    /* Biały tekst */
-    text-align: center;
-    /* Wyśrodkowanie tekstu */
-    /* background-color: #333;
-    border-radius: 5px; */
     width: 50%;
     height: 100%;
-}
-
-.hd44780-character h3 {
-    margin-bottom: 5px;
-    font-size: 16px;
+    display: flex;
+    flex-direction: column;
+    /* Włącz Flexbox */
+    justify-content: center;
+    /* Wyśrodkuj w poziomie */
+    align-items: center;
+    /* Wyśrodkuj w pionie */
 }
 
 .pixel-grid {
     display: flex;
     flex-direction: column;
-    gap: 2px;
-    align-items: center;
-    /* Wyśrodkowanie siatki pikseli */
+    gap: 0.15vw;
+    /* align-items: center; */
 }
 
 .pixel-grid-func-buttons {
-    width: 100%;
+    width: 90%;
     background-color: transparent;
     display: flex;
-    flex-direction: row;
-    gap:10px;
-    justify-content: center;
+    /* flex-direction: row; */
+    gap: 0.5vw;
+    margin: 0.1vw;
+
 }
 
 .pixel-grid-button {
     width: 100%;
-    max-width: 70px;
-    padding: 5px;
+    max-width: 10vw;
+    max-height: 2vW;
+    padding: 0.3vw;
     background-color: #333;
-    /* Ciemny kolor tła przycisku */
     color: #ffffff;
-    /* Biały kolor tekstu */
     border: none;
-    border-radius: 5px;
+    border-radius: 0.5vw;
     cursor: pointer;
-    font-size: 14px;
+    font-size: 0.9vw;
     transition: background-color 0.3s ease;
-    margin-top:10px;
-    /* Efekt przejścia */
+    margin-top: 1vw;
 }
 
 .pixel-grid-button:hover {
@@ -55,14 +48,18 @@
     /* Jaśniejszy odcień po najechaniu */
 }
 
+
 .pixel-row {
     display: flex;
-    gap: 2px;
+    gap: 0.1vw;
+    /* Użyj jednostki względnej dla odstępów między pikselami */
 }
 
 .pixel {
-    width: 20px;
-    height: 20px;
+    width: 1.3vw;
+    /* Użyj jednostki względnej dla szerokości piksela */
+    height: 1.3vw;
+    /* Użyj jednostki względnej dla wysokości piksela */
     background-color: #00ff00;
     /* Jasne tło dla pikseli */
     border: 1px solid #555;
@@ -91,6 +88,7 @@
     pointer-events: none;
     /* Blokuje rysowanie na pikselach, ale nie tooltip */
 }
+
 .hd44780-character.inactive .pixel-grid-func-buttons {
     pointer-events: none;
     /* Blokuje rysowanie na pikselach, ale nie tooltip */
@@ -104,9 +102,12 @@
     transform: translate(-50%, -50%);
     background-color: rgba(0, 0, 0, 0.8);
     color: white;
-    padding: 8px 12px;
-    border-radius: 5px;
-    font-size: 14px;
+    padding: 0.8vw 1.2vw;
+    /* Użyj jednostki względnej dla paddingu */
+    border-radius: 0.5vw;
+    /* Użyj jednostki względnej dla zaokrąglenia */
+    font-size: 1.4vw;
+    /* Użyj jednostki względnej dla rozmiaru czcionki */
     white-space: nowrap;
     opacity: 0;
     transition: opacity 0.3s ease;
@@ -120,11 +121,15 @@
 
 .hd44780-character.error {
     border: 2px solid #ff4444;
-    padding: 15px;
+    padding: 1.5vw;
+    /* Użyj jednostki względnej dla paddingu */
 }
 
 .error-message {
     color: #ff4444;
     font-weight: bold;
-    margin-top: 10px;
+    margin-top: 1vw;
+    /* Użyj jednostki względnej dla marginesu */
+    font-size: 1.4vw;
+    /* Użyj jednostki względnej dla rozmiaru czcionki */
 }

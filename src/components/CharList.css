@@ -1,50 +1,51 @@
 .char-list-containter {
     color: #ffffff;
     width: 100%;
-    /* background-color: #333; */
-    /* border-radius: 5px;
-    /* max-height: 200px; */
-    /* overflow-y: auto; */
-    margin-bottom:10px;
-    padding-bottom:10px;
+    margin-bottom: 0.5vw;
+    /* Użyj jednostki względnej dla marginesu */
+    padding-bottom: 0.5vw;
+    /* Użyj jednostki względnej dla paddingu */
 }
 
 .char-list {
-    margin-top: 5px;
     color: #ffffff;
     width: 100%;
     background-color: #333;
-    border-radius: 5px;
-    max-height: 220px;
-    min-height: 220px;
+    border-radius: 0.5vw;
+    height: 13vw;
     overflow-y: auto;
 }
 
 .char-list-containter h3 {
-    margin-top: 5px;
-    margin-bottom: 2px;
-    font-size: 16px;
+    margin-top: 0.5vw;
+    /* Użyj jednostki względnej dla marginesu */
+    margin-bottom: 0.2vw;
+    /* Użyj jednostki względnej dla marginesu */
+    font-size: 1.0vw;
+    /* Użyj jednostki względnej dla rozmiaru czcionki */
     text-align: center;
 }
 
 .char-list ul {
     list-style-type: none;
-    margin-top:5px;
+    margin-top: 0.5vw;
+    /* Użyj jednostki względnej dla marginesu */
     background-color: transparent;
-    padding-left: 10px;
-    padding-right: 10px;
+    padding-left: 1vw;
+    /* Użyj jednostki względnej dla paddingu */
+    padding-right: 1vw;
+    /* Użyj jednostki względnej dla paddingu */
 }
 
 .char-list li {
-    padding: 2px;
-    padding-left: 7px;
-    padding-bottom: 2px;
+    padding: 0.2vw;
+    /* Użyj jednostki względnej dla paddingu */
+    padding-left: 0.3vw;
+    /* Użyj jednostki względnej dla paddingu */
     background-color: #333;
-    /* margin-bottom: 3px;
-    border-radius: 3px; */
-    cursor: pointer;    
+    cursor: pointer;
     transition: background-color 0.3s ease;
-    font-size: 14px;
+    font-size: 0.9vw;
 }
 
 .char-list li:hover {
@@ -60,36 +61,42 @@
     background-color: transparent;
     display: flex;
     flex-direction: row;
-    gap: 5px;
+    gap: 0.5vw;
+    /* Użyj jednostki względnej dla odstępów */
 }
 
 .char-list-button {
     width: 100%;
-    padding: 5px;
+    padding: 0.5vw;
+    /* Użyj jednostki względnej dla paddingu */
     background-color: #333;
-    /* Ciemny kolor tła przycisku */
     color: #ffffff;
-    /* Biały kolor tekstu */
     border: none;
-    border-radius: 5px;
+    border-radius: 0.5vw;
+    /* Użyj jednostki względnej dla zaokrąglenia */
     cursor: pointer;
-    font-size: 14px;
+    font-size: 0.9vw;
+    /* Użyj jednostki względnej dla rozmiaru czcionki */
     transition: background-color 0.3s ease;
-    margin-top: 8px;
-    /* Efekt przejścia */
+    margin-top: 0.8vw;
+    /* Użyj jednostki względnej dla marginesu */
 }
 
 .char-list-button:hover {
     background-color: #555;
-    /* Jaśniejszy odcień po najechaniu */
 }
 
 .hint-message {
-    padding: 1rem;
+    padding: 1vw;
+    /* Użyj jednostki względnej dla paddingu */
     color: #666;
     font-style: italic;
     text-align: center;
     border: 1px dashed #ccc;
-    border-radius: 4px;
-    margin: 10px;
+    border-radius: 0.4vw;
+    /* Użyj jednostki względnej dla zaokrąglenia */
+    margin: 1vw;
+    /* Użyj jednostki względnej dla marginesu */
+    font-size: 0.9vw;
+    /* Użyj jednostki względnej dla rozmiaru czcionki */
 }

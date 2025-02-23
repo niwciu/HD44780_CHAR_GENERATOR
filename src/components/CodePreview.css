@@ -1,0 +1,79 @@
+.code-preview-container {
+    background: #282C34;
+    border-radius: 0.8vw;
+    /* Użyj jednostki względnej dla zaokrąglenia */
+    box-shadow: 0 0.2vw 0.8vw rgba(0, 0, 0, 0.3);
+    /* Użyj jednostki względnej dla cienia */
+    margin: 1.3vw;
+    /* Użyj jednostki względnej dla marginesu */
+    overflow: hidden;
+    /* flex: 1 1 auto; */
+    /* Elastyczne dopasowanie do kontenera */
+    max-height: 90vh;
+    /* Minimalna wysokość względem viewportu */
+    display: flex;
+    flex-direction: column;
+}
+
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75vw 1vw;
+    /* Użyj jednostki względnej dla paddingu */
+    background: rgba(0, 0, 0, 0.2);
+    border-bottom: 1px solid #333;
+}
+
+.file-title {
+    color: #fff;
+    margin: 0;
+    font-size: 1.2vw;
+    /* Użyj jednostki względnej dla rozmiaru czcionki */
+    font-family: 'SF Mono', 'Consolas', monospace;
+    font-weight: 500;
+}
+
+.toolbar-buttons {
+    display: flex;
+    gap: 0.5vw;
+    /* Użyj jednostki względnej dla odstępów */
+}
+
+.icon-button {
+    background: none;
+    border: none;
+    padding: 0.25vw;
+    /* Użyj jednostki względnej dla paddingu */
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+.icon-button img,
+.icon-button svg {
+    width: 1.4vw;
+    /* Użyj jednostki względnej */
+    height: 1.4vw;
+    /* Użyj jednostki względnej */
+}
+
+.icon-button:hover {
+    opacity: 0.8;
+}
+
+.code-content-wrapper {
+    position: relative;
+    padding: 1vw;
+    /* Użyj jednostki względnej dla paddingu */
+    flex: 1;
+    /* Rozciąga się, aby wypełnić dostępną przestrzeń */
+    display: flex;
+    flex-direction: column;
+}
+
+.code-scroll-container {
+    margin: 1.2vw;
+    /* Użyj jednostki względnej dla marginesu */
+    flex: 1;
+    /* Rozciąga się, aby wypełnić dostępną przestrzeń */
+    overflow-y: auto;
+}
