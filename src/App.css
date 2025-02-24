@@ -2,8 +2,6 @@ body,
 html {
   margin: 0;
   padding: 0;
-  /* height: 100%;*/
-  /* width:100vw; */
   font-family: Arial, sans-serif;
   background-color: #121212;
   /* Ciemne tło dla całej strony */
@@ -42,7 +40,6 @@ html {
   overflow: auto;
 }
 
-
 .left-column-row {
   width: 100%;
   height: fit-content;
@@ -56,24 +53,6 @@ html {
   /* box-sizing: border-box; */
 }
 
-
-/* Dla mniejszych ekranów - media query
-@media (max-width: 1200px) {
-  .app-container {
-    flex-direction: column;
-  }
-
-  .left-column,
-  .right-column {
-    min-width: unset;
-    width: 100%;
-    max-width: 100%;
-  }
-} */
-
-.pixel-grid-button {
-
-}
 .create-new-char-button {
   width: 100%;
   max-height: 5vW;

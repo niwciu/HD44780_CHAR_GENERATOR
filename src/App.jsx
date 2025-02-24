@@ -6,6 +6,7 @@ import BankNameModal from './components/BankNameModal';
 import CharList from './components/CharList'; // Nowy komponent
 import CharBanksList from './components/CharBanksList'; // Nowy komponent
 import CodePreview from './components/CodePreview';
+import { generateCode } from './components/CodeGenerator';
 
 function App() {
   const [isCharModalOpen, setisCharModalOpen] = useState(false);
@@ -15,7 +16,7 @@ function App() {
   const [banks, setBanks] = useState([]); // Lista stworzonych bankow
   const [selectedBank, setSelectedBank] = useState(null); // Aktualnie wybrany znak
   const [selectedBankChar, setSelectedBankChar] = useState(null); // Aktualnie wybrany znak w banku
-  const [generatedCode, setGeneratedCode] = useState("#include \"test.h\"\n static void test (void) \nstatic void test (void) \nstatic void test (void) \nstatic void test (void) \nstatic void test (void) \nstatic void test (void) \nstatic void test (void) \nstatic void test (void) \nstatic void test (void) \nstatic void test (void) \nstatic void test (void) \nstatic void test (void) \nstatic void test (void) \nstatic void test (void) \nstatic void test (void) \nstatic void test (void) \nstatic void test (void) \nstatic void test (void) \nstatic void test (void) \nstatic void test (void) \nstatic void test (void) \nstatic void test (void) \nstatic void test (void) \nstatic void test (void) \nstatic void test (void) \nstatic void test (void) \nstatic void test (void) \nstatic void test (void) \nstatic void test (void) \nstatic void test (void) \nstatic void test (void) \nstatic void test (void) \nstatic void test (void) \nstatic void test (void) \nstatic void test (void) \nstatic void test (void) \nstatic void test (void) \nstatic void test (void) \nstatic void test (void) \nstatic void test (void) \n");
+  const [generatedCode, setGeneratedCode] = useState("");
 
   const handleCreateNewChar = () => {
     setisCharModalOpen(true);
@@ -202,6 +203,10 @@ function App() {
     handleDeleteAll('bank');
   };
 
+  const handleCodeGeneration = () => {
+    generateCode(chars,setGeneratedCode);
+  }
+
   const handleSaveConfigToFile = () => {
     // Utwórz obiekt konfiguracji
     const config = {
@@ -383,7 +388,7 @@ function App() {
           </button>
         </div>
         <div className="left-column-row">
-          <button className="create-new-char-button" onClick={handleCreateNewChar}>
+          <button className="create-new-char-button" onClick={handleCodeGeneration}>
             Copy char from application special characters base
           </button>
         </div>
