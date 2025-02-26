@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useCallback } from 'react'; 
+import PropTypes from 'prop-types';
 import './App.css';
 import HD44780Character from './components/HD44780Character';
 import CharNameModal from './components/CharNameModal';
@@ -7,7 +8,6 @@ import CharList from './components/CharList';
 import CharBanksList from './components/CharBanksList';
 import CodePreview from './components/CodePreview';
 import { generateCode } from './components/CodeGenerator';
-import { debounce } from 'lodash';
 
 function App() {
   const [isCharModalOpen, setisCharModalOpen] = useState(false);
@@ -20,10 +20,18 @@ function App() {
   const [generatedCode, setGeneratedCode] = useState("");
   const [addComments, setAddComments] = useState(true);
 
-  // Automatyczne generowanie kodu po zmianie chars lub banks
+  const handleCodeGeneration = useCallback(() => {
+    if (addComments) {
+      console.log("Generating code with comments...");
+    } else {
+      console.log("Generating code without comments...");
+    }
+    generateCode(chars, banks, addComments, setGeneratedCode);
+  }, [chars, banks, addComments, setGeneratedCode]); 
+
   useEffect(() => {
     handleCodeGeneration();
-  }, [chars, banks, addComments]);
+  }, [handleCodeGeneration]);
 
   const handleAddCommentsChange = (newValue) => {
     setAddComments(newValue);
@@ -204,15 +212,6 @@ function App() {
     handleDeleteAll('bank');
   };
 
-  const handleCodeGeneration = () => {
-    if (addComments) {
-      console.log("Generating code with comments...");
-    } else {
-      console.log("Generating code without comments...");
-    }
-    generateCode(chars, banks, addComments, setGeneratedCode);
-  };
-
   const handleSaveConfigToFile = () => {
     const config = {
       version: 1,
@@ -350,7 +349,7 @@ function App() {
               onClick={handleAddCharToBank}
               disabled={selectedChar === null || selectedBank === null}
             >
-              >
+              &gt;
             </button>
             {(selectedChar === null || selectedBank === null) && (
               <div className="tooltip-text">
@@ -415,5 +414,53 @@ function App() {
     </div>
   );
 }
+
+
+App.propTypes = {
+
+  CodePreview: PropTypes.shape({
+    code: PropTypes.string,
+    fileName: PropTypes.string,
+    onAddCommentsChange: PropTypes.func
+  }),
+
+  CharNameModal: PropTypes.shape({
+    isOpen: PropTypes.bool,
+    onClose: PropTypes.func,
+    onSave: PropTypes.func,
+    existingNames: PropTypes.arrayOf(PropTypes.string)
+  }),
+
+  BankNameModal: PropTypes.shape({
+    isOpen: PropTypes.bool,
+    onClose: PropTypes.func,
+    onSave: PropTypes.func,
+    existingNames: PropTypes.arrayOf(PropTypes.string)
+  }),
+
+  CharList: PropTypes.shape({
+    title: PropTypes.string,
+    chars: PropTypes.arrayOf(PropTypes.object),
+    onSelectChar: PropTypes.func,
+    selectedChar: PropTypes.number,
+    onDeleteSelected: PropTypes.func,
+    onDeleteAll: PropTypes.func,
+    isBankSelected: PropTypes.bool
+  }),
+
+  CharBanksList: PropTypes.shape({
+    banks: PropTypes.arrayOf(PropTypes.object),
+    onSelectBank: PropTypes.func,
+    selectedBank: PropTypes.number,
+    onDeleteSelected: PropTypes.func,
+    onDeleteAll: PropTypes.func
+  }),
+
+  HD44780Character: PropTypes.shape({
+    isActive: PropTypes.bool,
+    pixels: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.bool)),
+    onUpdatePixels: PropTypes.func
+  })
+};
 
 export default App;

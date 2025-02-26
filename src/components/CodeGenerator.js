@@ -26,7 +26,7 @@ export const generateCode = (chars, banks, addComments, setCode) => {
         'extern "C" {\n' +
         '#endif /* __cplusplus */\n\n' +
         '#include <stdint.h>\n' +
-        '#include \"lcd_hd44780_config.h\"\n'+
+        '#include "lcd_hd44780_config.h"\n'+
         '\n'+
         '#define LCD_CGRAM_BYTES_PER_CHAR 8\n'+
         '#define DEF_CHAR_ADR_MASK 7\n' +
@@ -240,13 +240,13 @@ export const generateCode = (chars, banks, addComments, setCode) => {
                         '        // {\'Ł\', bank_1_Pol_l}, /**< Extended ASCII \'Ł\' mapped to the custom character under CGRAM address = bank_1_Pol_l) */\n\n';
 
             const bankCharMapping = bank.characters
-                .map((charIndex, idx) => {
+                .map((charIndex) => {
                     const char = chars[charIndex];
                     if (!char) return null;
                     const sanitizedName = char.name.replace(/[^a-zA-Z0-9]/g, '_');
                     // const code_lin = '';
                     if(addComments){
-                        return `        // {'<char2map>',${sanitizedBankName}_${sanitizedName}}, /**< Extended ASCII \'<char2map>\' mapped to the custom character under CGRAM address = ${sanitizedBankName}_${sanitizedName}) */`;
+                        return `        // {'<char2map>',${sanitizedBankName}_${sanitizedName}}, /**< Extended ASCII '<char2map>' mapped to the custom character under CGRAM address = ${sanitizedBankName}_${sanitizedName}) */`;
                     }else{
                         return`        // {'<char2map>',${sanitizedBankName}_${sanitizedName}},`
                     }

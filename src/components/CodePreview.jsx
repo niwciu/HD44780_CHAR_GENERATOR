@@ -9,20 +9,23 @@ const CodePreview = ({ code, fileName, onAddCommentsChange }) => {
     const [addComments, setAddComments] = useState(true);
 
     useEffect(() => {
-        if (onAddCommentsChange) {
-            onAddCommentsChange(addComments);
-        }
+        onAddCommentsChange?.(addComments);
     }, [addComments, onAddCommentsChange]);
 
-    const toogleAddCommentsState = () => {
+    const toggleAddCommentsState = () => {
         setAddComments(prevState => !prevState);
     };
 
     const handleCopyCode = () => {
-        navigator.clipboard.writeText(code).then(() => {
-            setCopied(true);
-            setTimeout(() => setCopied(false), 2000);
-        });
+        navigator.clipboard.writeText(code)
+            .then(() => {
+                setCopied(true);
+                setTimeout(() => setCopied(false), 2000);
+            })
+            .catch(err => {
+                console.error('Failed to copy text:', err);
+                alert('Failed to copy code to clipboard');
+            });
     };
 
     const handleDownloadFile = () => {
@@ -42,7 +45,7 @@ const CodePreview = ({ code, fileName, onAddCommentsChange }) => {
                         className="toolbar-show-comments-checkobox"
                         type="checkbox"
                         checked={addComments}
-                        onChange={toogleAddCommentsState}
+                        onChange={toggleAddCommentsState}
                     />
                     <label className="toolbar-show-comments-checkobox-label">
                         Add comments
@@ -87,7 +90,7 @@ const CodePreview = ({ code, fileName, onAddCommentsChange }) => {
                             }}
                         >
                             {tokens.map((line, i) => (
-                                <div key={i} {...getLineProps({ line })}> 
+                                <div key={i} {...getLineProps({ line })}>
                                     <span
                                         style={{
                                             display: "inline-block",
@@ -102,7 +105,7 @@ const CodePreview = ({ code, fileName, onAddCommentsChange }) => {
                                         {i + 1}
                                     </span>
                                     {line.map((token, key) => (
-                                        <span key={key} {...getTokenProps({ token })} /> 
+                                        <span key={key} {...getTokenProps({ token })} />
                                     ))}
                                 </div>
                             ))}
@@ -118,6 +121,11 @@ CodePreview.propTypes = {
     code: PropTypes.string.isRequired,
     fileName: PropTypes.string,
     onAddCommentsChange: PropTypes.func,
+};
+
+CodePreview.defaultProps = {
+    fileName: "lcd_hd44780_def_char.h",
+    onAddCommentsChange: null,
 };
 
 export default CodePreview;

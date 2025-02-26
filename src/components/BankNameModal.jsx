@@ -1,32 +1,29 @@
-import React, { useState } from 'react';
-import { FaTimes as CancelIcon, FaCheck as OkIcon } from 'react-icons/fa'; // Import ikon
-import './BankNameModal.css'; // Stylizacja modala
+import { useState } from 'react';
+import PropTypes from 'prop-types';
+import { FaTimes as CancelIcon, FaCheck as OkIcon } from 'react-icons/fa';
+import './BankNameModal.css';
 
 const BankNameModal = ({ isOpen, onClose, onSave, existingNames }) => {
     const [newBankName, setNewBankName] = useState('');
 
-    // Obsługa zmiany nazwy
     const handleNameChange = (event) => {
         setNewBankName(event.target.value);
     };
 
-    // Obsługa kliknięcia OK
     const handleOk = () => {
         const trimmedName = newBankName.trim();
 
-        // Sprawdzamy, czy nazwa już istnieje (ignorujemy wielkość liter)
         if (existingNames.some(name => name.toLowerCase() === trimmedName.toLowerCase())) {
-            alert('Bank with this name already exists!'); // Możesz zmienić na inną metodę obsługi
+            alert('Bank with this name already exists!');
             return;
         }
 
         if (trimmedName.length > 0) {
-            onSave(trimmedName); // Przekazujemy nazwę do funkcji onSave
-            setNewBankName(''); // Resetujemy pole
+            onSave(trimmedName);
+            setNewBankName('');
         }
     };
 
-    // Jeśli modal nie jest otwarty, nie renderujemy nic
     if (!isOpen) return null;
 
     return (
@@ -44,7 +41,10 @@ const BankNameModal = ({ isOpen, onClose, onSave, existingNames }) => {
                         <CancelIcon className="button-icon" />
                         Cancel
                     </button>
-                    <button onClick={handleOk} disabled={newBankName.trim().length === 0}>
+                    <button
+                        onClick={handleOk}
+                        disabled={newBankName.trim().length === 0}
+                    >
                         <OkIcon className="button-icon" />
                         OK
                     </button>
@@ -52,6 +52,13 @@ const BankNameModal = ({ isOpen, onClose, onSave, existingNames }) => {
             </div>
         </div>
     );
+};
+
+BankNameModal.propTypes = {
+    isOpen: PropTypes.bool.isRequired,
+    onClose: PropTypes.func.isRequired,
+    onSave: PropTypes.func.isRequired,
+    existingNames: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 export default BankNameModal;

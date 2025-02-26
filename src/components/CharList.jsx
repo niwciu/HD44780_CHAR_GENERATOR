@@ -1,5 +1,4 @@
-// CharList.js
-import React from 'react';
+import PropTypes from 'prop-types';
 import './CharList.css';
 
 const CharList = ({
@@ -9,7 +8,7 @@ const CharList = ({
     selectedChar,
     onDeleteSelected,
     onDeleteAll,
-    isBankSelected // Nowy opcjonalny prop
+    isBankSelected
 }) => {
     return (
         <div className="char-list-containter">
@@ -47,7 +46,7 @@ const CharList = ({
                     onClick={() => onDeleteSelected?.(selectedChar)}
                     disabled={selectedChar === null}
                 >
-                    {isBankSelected ? "Remove Selected" : "Delete selected"} 
+                    {isBankSelected ? "Remove Selected" : "Delete selected"}
                 </button>
             </div>
             <div className="char-list-buttons-row">
@@ -56,11 +55,31 @@ const CharList = ({
                     onClick={onDeleteAll}
                     disabled={chars.length === 0}
                 >
-                {isBankSelected ? "Remove All" : "Delete All"}
+                    {isBankSelected ? "Remove All" : "Delete All"}
                 </button>
             </div>
         </div>
     );
+};
+
+CharList.propTypes = {
+    title: PropTypes.string.isRequired,
+    chars: PropTypes.arrayOf(
+        PropTypes.shape({
+            name: PropTypes.string.isRequired
+        })
+    ).isRequired,
+    onSelectChar: PropTypes.func.isRequired,
+    selectedChar: PropTypes.number,
+    onDeleteSelected: PropTypes.func,
+    onDeleteAll: PropTypes.func.isRequired,
+    isBankSelected: PropTypes.bool
+};
+
+CharList.defaultProps = {
+    selectedChar: null,
+    onDeleteSelected: null,
+    isBankSelected: undefined
 };
 
 export default CharList;

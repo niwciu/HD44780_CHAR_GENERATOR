@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import './HD44780Character.css';
 
 const HD44780Character = ({ isActive, pixels, onUpdatePixels }) => {
@@ -40,7 +41,6 @@ const HD44780Character = ({ isActive, pixels, onUpdatePixels }) => {
         onUpdatePixels(newPixels);
     };
 
-    // Dodaj brakujące funkcje
     const handleMouseDown = (row, col) => {
         setIsDrawing(true);
         togglePixel(row, col);
@@ -122,6 +122,14 @@ const HD44780Character = ({ isActive, pixels, onUpdatePixels }) => {
             </div>
         </div>
     );
+};
+
+HD44780Character.propTypes = {
+    isActive: PropTypes.bool.isRequired,
+    pixels: PropTypes.arrayOf(
+        PropTypes.arrayOf(PropTypes.bool)
+    ).isRequired,
+    onUpdatePixels: PropTypes.func.isRequired,
 };
 
 export default HD44780Character;

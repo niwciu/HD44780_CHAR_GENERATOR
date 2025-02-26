@@ -1,32 +1,29 @@
-import React, { useState } from 'react';
-import { FaTimes as CancelIcon, FaCheck as OkIcon } from 'react-icons/fa'; // Import ikon
-import './CharNameModal.css'; // Stylizacja modala
+import { useState } from 'react';
+import PropTypes from 'prop-types';
+import { FaTimes as CancelIcon, FaCheck as OkIcon } from 'react-icons/fa';
+import './CharNameModal.css';
 
 const CharNameModal = ({ isOpen, onClose, onSave, existingNames }) => {
     const [newCharName, setNewCharName] = useState('');
 
-    // Obsługa zmiany nazwy
     const handleNameChange = (event) => {
         setNewCharName(event.target.value);
     };
 
-    // Obsługa kliknięcia OK
     const handleOk = () => {
         const trimmedName = newCharName.trim();
 
-        // Sprawdzamy, czy nazwa już istnieje (ignorujemy wielkość liter)
         if (existingNames.some(name => name.toLowerCase() === trimmedName.toLowerCase())) {
-            alert('Char with this name already exists!'); // Możesz zmienić na inną metodę obsługi
+            alert('Char with this name already exists!');
             return;
         }
 
         if (trimmedName.length > 0) {
-            onSave(trimmedName); // Przekazujemy nazwę do funkcji onSave
-            setNewCharName(''); // Resetujemy pole
+            onSave(trimmedName);
+            setNewCharName('');
         }
     };
 
-    // Jeśli modal nie jest otwarty, nie renderujemy nic
     if (!isOpen) return null;
 
     return (
@@ -44,7 +41,10 @@ const CharNameModal = ({ isOpen, onClose, onSave, existingNames }) => {
                         <CancelIcon className="button-icon" />
                         Cancel
                     </button>
-                    <button onClick={handleOk} disabled={newCharName.trim().length === 0}>
+                    <button
+                        onClick={handleOk}
+                        disabled={newCharName.trim().length === 0}
+                    >
                         <OkIcon className="button-icon" />
                         OK
                     </button>
@@ -52,6 +52,13 @@ const CharNameModal = ({ isOpen, onClose, onSave, existingNames }) => {
             </div>
         </div>
     );
+};
+
+CharNameModal.propTypes = {
+    isOpen: PropTypes.bool.isRequired,
+    onClose: PropTypes.func.isRequired,
+    onSave: PropTypes.func.isRequired,
+    existingNames: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 export default CharNameModal;
