@@ -306,6 +306,10 @@ function App() {
     input.click();
   };
 
+  const handleFutureFuncInfo = () => {
+     alert("This functionality is not avaliable. \n\n Will be implemented in the future");
+  }
+
   return (
     <div className="app-container">
       <div className="left-column">
@@ -380,6 +384,11 @@ function App() {
           </button>
           <button className="create-new-char-button" onClick={handleResetAll}>
             Reset all
+          </button>
+        </div>
+        <div className="left-column-row">
+          <button className="create-new-char-button" onClick={handleFutureFuncInfo}>
+            Copy char from application special characters base
           </button>
         </div>
       </div>

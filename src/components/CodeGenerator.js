@@ -235,7 +235,7 @@ export const generateCode = (chars, banks, addComments, setCode) => {
             
             bankCode += '        // HERE YOU CAN DEFINE MAPPING OF YOUR DEF CHAR TO ANY U8 ASCII CHAR \n' +
                         '        // Defined ASCII U8 Char will be displayed on LCD as mapped def char\n' + 
-                        '        // You can mapp more ASCI char to one def char. Look on example bellow\n' +
+                        '        // You can mapp more ASCI char to one def char. Look at the example bellow\n' +
                         '        // {\'ł\', bank_1_Pol_l}, /**< Extended ASCII \'ł\' mapped to the custom character under CGRAM address = bank_1_Pol_l) */\n' +
                         '        // {\'Ł\', bank_1_Pol_l}, /**< Extended ASCII \'Ł\' mapped to the custom character under CGRAM address = bank_1_Pol_l) */\n\n';
 
