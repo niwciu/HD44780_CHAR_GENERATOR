@@ -71,3 +71,24 @@
     max-height: 80vh;
 }
 
+.toolbar-checkbox {
+    justify-self: center;
+    padding-left: 1.8vw;
+    margin-right: auto;
+}
+
+.toolbar-show-comments-checkobox {
+    width: 1.2vw;
+    height: 1.2vw;
+    cursor: pointer;
+
+}
+
+.toolbar-show-comments-checkobox-label
+{
+    margin-left: 0.3vw;
+    font-size: 1.1vw;
+    color: olivedrab;
+    position: relative;
+    top: -0.1vw;
+}

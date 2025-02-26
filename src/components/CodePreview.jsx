@@ -1,13 +1,22 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { Clipboard, Download } from "lucide-react";
 import { Highlight, themes } from "prism-react-renderer";
-// import theme from "prism-react-renderer/themes/vsDark"; // Oficjalny import motywu
 import "./CodePreview.css";
 
-const CodePreview = ({ code, fileName }) => {
+const CodePreview = ({ code, fileName, onAddCommentsChange }) => {
     const [copied, setCopied] = useState(false);
-    // const theme = require('prism-react-renderer').themes.github
+    const [addComments, setAddComments] = useState(true);
+
+    useEffect(() => {
+        if (onAddCommentsChange) {
+            onAddCommentsChange(addComments);
+        }
+    }, [addComments, onAddCommentsChange]);
+
+    const toogleAddCommentsState = () => {
+        setAddComments(prevState => !prevState);
+    };
 
     const handleCopyCode = () => {
         navigator.clipboard.writeText(code).then(() => {
@@ -28,6 +37,17 @@ const CodePreview = ({ code, fileName }) => {
         <div className="code-preview-container">
             <div className="header-container">
                 <h3 className="file-title">{fileName || "untitled.c"}</h3>
+                <div className="toolbar-checkbox">
+                    <input
+                        className="toolbar-show-comments-checkobox"
+                        type="checkbox"
+                        checked={addComments}
+                        onChange={toogleAddCommentsState}
+                    />
+                    <label className="toolbar-show-comments-checkobox-label">
+                        Add comments
+                    </label>
+                </div>
                 <div className="toolbar-buttons">
                     <button
                         className="icon-button"
@@ -68,7 +88,6 @@ const CodePreview = ({ code, fileName }) => {
                         >
                             {tokens.map((line, i) => (
                                 <div key={i} {...getLineProps({ line, key: i })}>
-                                    {/* Numer linii */}
                                     <span
                                         style={{
                                             display: "inline-block",
@@ -82,8 +101,6 @@ const CodePreview = ({ code, fileName }) => {
                                     >
                                         {i + 1}
                                     </span>
-
-                                    {/* Zawartość linii */}
                                     {line.map((token, key) => (
                                         <span key={key} {...getTokenProps({ token, key })} />
                                     ))}
@@ -100,6 +117,7 @@ const CodePreview = ({ code, fileName }) => {
 CodePreview.propTypes = {
     code: PropTypes.string.isRequired,
     fileName: PropTypes.string,
+    onAddCommentsChange: PropTypes.func,
 };
 
 export default CodePreview;

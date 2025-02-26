@@ -17,6 +17,12 @@ function App() {
   const [selectedBank, setSelectedBank] = useState(null); // Aktualnie wybrany znak
   const [selectedBankChar, setSelectedBankChar] = useState(null); // Aktualnie wybrany znak w banku
   const [generatedCode, setGeneratedCode] = useState("");
+  const [addComments, setAddComments] = useState(true);
+
+  const handleAddCommentsChange = (newValue) => {
+    setAddComments(newValue);
+    console.log("Add comments state changed to:", newValue);
+  };
 
   const handleCreateNewChar = () => {
     setisCharModalOpen(true);
@@ -204,8 +210,13 @@ function App() {
   };
 
   const handleCodeGeneration = () => {
-    generateCode(chars,setGeneratedCode);
-  }
+    if (addComments) {
+      console.log("Generating code with comments...");
+    } else {
+      console.log("Generating code without comments...");
+    }
+    generateCode(chars, banks, addComments, setGeneratedCode);
+  };
 
   const handleSaveConfigToFile = () => {
     // Utwórz obiekt konfiguracji
@@ -394,7 +405,11 @@ function App() {
         </div>
       </div>
       <div className="right-column">
-        <CodePreview code={generatedCode} fileName="lcd_hd44780_def_char.h" />
+        <CodePreview
+          code={generatedCode}
+          fileName="lcd_hd44780_def_char.h"
+          onAddCommentsChange={handleAddCommentsChange}
+        />
       </div>
 
       <CharNameModal

@@ -67,7 +67,7 @@
 
 .char-list-button {
     width: 100%;
-    padding: 0.5vw;
+    padding: 0.8vh;
     /* Użyj jednostki względnej dla paddingu */
     background-color: #333;
     color: #ffffff;
@@ -78,7 +78,7 @@
     font-size: 0.9vw;
     /* Użyj jednostki względnej dla rozmiaru czcionki */
     transition: background-color 0.3s ease;
-    margin-top: 0.8vw;
+    margin-top: 0.8vh;
     /* Użyj jednostki względnej dla marginesu */
 }
 
