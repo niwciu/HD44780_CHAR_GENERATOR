@@ -87,7 +87,7 @@ const CodePreview = ({ code, fileName, onAddCommentsChange }) => {
                             }}
                         >
                             {tokens.map((line, i) => (
-                                <div key={i} {...getLineProps({ line, key: i })}>
+                                <div key={i} {...getLineProps({ line })}> 
                                     <span
                                         style={{
                                             display: "inline-block",
@@ -102,7 +102,7 @@ const CodePreview = ({ code, fileName, onAddCommentsChange }) => {
                                         {i + 1}
                                     </span>
                                     {line.map((token, key) => (
-                                        <span key={key} {...getTokenProps({ token, key })} />
+                                        <span key={key} {...getTokenProps({ token })} /> 
                                     ))}
                                 </div>
                             ))}

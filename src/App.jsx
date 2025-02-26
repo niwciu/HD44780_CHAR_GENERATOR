@@ -1,27 +1,32 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import './App.css';
 import HD44780Character from './components/HD44780Character';
 import CharNameModal from './components/CharNameModal';
 import BankNameModal from './components/BankNameModal';
-import CharList from './components/CharList'; // Nowy komponent
-import CharBanksList from './components/CharBanksList'; // Nowy komponent
+import CharList from './components/CharList';
+import CharBanksList from './components/CharBanksList';
 import CodePreview from './components/CodePreview';
 import { generateCode } from './components/CodeGenerator';
+import { debounce } from 'lodash';
 
 function App() {
   const [isCharModalOpen, setisCharModalOpen] = useState(false);
-  const [chars, setChars] = useState([]); // Lista stworzonych znaków
-  const [selectedChar, setSelectedChar] = useState(null); // Aktualnie wybrany znak
+  const [chars, setChars] = useState([]);
+  const [selectedChar, setSelectedChar] = useState(null);
   const [isBankModalOpen, setisBankModalOpen] = useState(false);
-  const [banks, setBanks] = useState([]); // Lista stworzonych bankow
-  const [selectedBank, setSelectedBank] = useState(null); // Aktualnie wybrany znak
-  const [selectedBankChar, setSelectedBankChar] = useState(null); // Aktualnie wybrany znak w banku
+  const [banks, setBanks] = useState([]);
+  const [selectedBank, setSelectedBank] = useState(null);
+  const [selectedBankChar, setSelectedBankChar] = useState(null);
   const [generatedCode, setGeneratedCode] = useState("");
   const [addComments, setAddComments] = useState(true);
 
+  // Automatyczne generowanie kodu po zmianie chars lub banks
+  useEffect(() => {
+    handleCodeGeneration();
+  }, [chars, banks, addComments]);
+
   const handleAddCommentsChange = (newValue) => {
     setAddComments(newValue);
-    console.log("Add comments state changed to:", newValue);
   };
 
   const handleCreateNewChar = () => {
@@ -43,16 +48,14 @@ function App() {
   const handleSaveChar = (charName) => {
     const trimmedName = charName.trim();
 
-    // Sprawdzenie, czy nazwa już istnieje (ignorujemy wielkość liter)
     if (chars.some(char => char.name.toLowerCase() === trimmedName.toLowerCase())) {
-      alert('This character name already exists!'); // Można zmienić na inny sposób informowania
+      alert('This character name already exists!');
       return;
     }
 
-    // Tworzymy nowy znak
     const newChar = {
       name: trimmedName,
-      pixels: Array(8).fill().map(() => Array(5).fill(false)) // Domyślny stan pikseli
+      pixels: Array(8).fill().map(() => Array(5).fill(false))
     };
 
     setChars([...chars, newChar]);
@@ -62,16 +65,14 @@ function App() {
   const handleSaveBank = (bankName) => {
     const trimmedName = bankName.trim();
 
-    // Sprawdzenie, czy nazwa już istnieje (ignorujemy wielkość liter)
     if (banks.some(bank => bank.name.toLowerCase() === trimmedName.toLowerCase())) {
-      alert('This bank name already exists!'); // Można zmienić na inny sposób informowania
+      alert('This bank name already exists!');
       return;
     }
 
-    // Tworzymy nowy bank
     const newBank = {
       name: trimmedName,
-      characters: [] 
+      characters: []
     };
 
     setBanks([...banks, newBank]);
@@ -87,13 +88,11 @@ function App() {
     setBanks(prevBanks => {
       return prevBanks.map((bank, index) => {
         if (index === selectedBank) {
-          // Najpierw sprawdź limit
           if (bank.characters.length >= 8) {
             alert("Bank is full! Maximum 8 characters allowed.");
             return bank;
           }
 
-          // Następnie sprawdź duplikat
           if (bank.characters.includes(selectedChar)) {
             alert("This character already exists in the selected bank");
             return bank;
@@ -109,14 +108,13 @@ function App() {
     });
   };
 
-
   const handleSelectChar = (index) => {
     setSelectedChar(index);
   };
 
   const handleSelectBank = (index) => {
     setSelectedBank(index);
-    setSelectedBankChar(null); // Resetuj wybrany znak w banku przy zmianie banku
+    setSelectedBankChar(null);
   };
 
   const handleSelectBankChar = (index) => {
@@ -162,7 +160,6 @@ function App() {
     }
   };
 
-  // Usuwanie wszystkich elementów (dla obu list)
   const handleDeleteAll = (type) => {
     if (type === 'global') {
       setChars([]);
@@ -170,7 +167,6 @@ function App() {
         ...bank,
         characters: []
       })));
-      // Resetuj wszystkie powiązane stany
       setSelectedChar(null);
       setSelectedBankChar(null);
     }
@@ -190,7 +186,6 @@ function App() {
 
     setBanks(prev => prev.filter((_, i) => i !== index));
 
-    // Reset selection if deleting currently selected bank
     if (selectedBank === index) {
       setSelectedBank(null);
       setSelectedBankChar(null);
@@ -200,7 +195,7 @@ function App() {
   const handleDeleteAllBanks = () => {
     setBanks([]);
     setSelectedBank(null);
-    setSelectedBankChar(null); // Dodaj resetowanie stanu
+    setSelectedBankChar(null);
   };
 
   const handleResetAll = () => {
@@ -219,21 +214,17 @@ function App() {
   };
 
   const handleSaveConfigToFile = () => {
-    // Utwórz obiekt konfiguracji
     const config = {
       version: 1,
       chars: chars,
       banks: banks
     };
 
-    // Poproś użytkownika o nazwę pliku
     const fileName = prompt("Enter configuration file name:", "hd44780_config");
     if (!fileName) return;
 
-    // Dodaj rozszerzenie .json jeśli brak
     const fullFileName = fileName.endsWith('.json') ? fileName : `${fileName}.json`;
 
-    // Utwórz i pobierz plik
     const json = JSON.stringify(config, null, 2);
     const blob = new Blob([json], { type: "application/json" });
     const url = URL.createObjectURL(blob);
@@ -274,7 +265,6 @@ function App() {
     switch (config.version) {
       case 1:
         return config;
-      // Dodaj obsługę starszych wersji jeśli potrzebujesz
       default:
         throw new Error("Unsupported config version");
     }
@@ -293,21 +283,16 @@ function App() {
       reader.onload = (event) => {
         try {
           const config = JSON.parse(event.target.result);
-
-          // Krok 1: Migracja konfiguracji do najnowszej wersji
           const migratedConfig = migrateConfig(config);
 
-          // Krok 2: Walidacja struktury
           if (!validateConfig(migratedConfig)) {
             throw new Error("Invalid configuration structure");
           }
 
-          // Resetuj wszystkie stany przed wczytaniem
           setSelectedChar(null);
           setSelectedBank(null);
           setSelectedBankChar(null);
 
-          // Aktualizuj stany
           setChars(migratedConfig.chars);
           setBanks(migratedConfig.banks);
 
@@ -320,7 +305,6 @@ function App() {
     };
     input.click();
   };
-
 
   return (
     <div className="app-container">
@@ -376,15 +360,15 @@ function App() {
             chars={
               selectedBank !== null && banks[selectedBank]
                 ? banks[selectedBank].characters
-                  .filter(charIndex => charIndex < chars.length) // Dodaj filtr
+                  .filter(charIndex => charIndex < chars.length)
                   .map(charIndex => chars[charIndex])
                 : []
-            } 
+            }
             onSelectChar={handleSelectBankChar}
             selectedChar={selectedBankChar}
             onDeleteSelected={(index) => handleDeleteItem('bank', index)}
             onDeleteAll={() => handleDeleteAll('bank')}
-            isBankSelected={selectedBank !== null} // Nowy prop
+            isBankSelected={selectedBank !== null}
           />
         </div>
         <div className="left-column-row">
@@ -396,11 +380,6 @@ function App() {
           </button>
           <button className="create-new-char-button" onClick={handleResetAll}>
             Reset all
-          </button>
-        </div>
-        <div className="left-column-row">
-          <button className="create-new-char-button" onClick={handleCodeGeneration}>
-            Copy char from application special characters base
           </button>
         </div>
       </div>
@@ -416,13 +395,13 @@ function App() {
         isOpen={isCharModalOpen}
         onClose={handleCloseCharModal}
         onSave={handleSaveChar}
-        existingNames={chars.map(char => char.name)} // Przekazujemy listę istniejących nazw
+        existingNames={chars.map(char => char.name)}
       />
       <BankNameModal
         isOpen={isBankModalOpen}
         onClose={handleCloseBankModal}
         onSave={handleSaveBank}
-        existingNames={banks.map(bank => bank.name)} // Przekazujemy listę istniejących nazw
+        existingNames={banks.map(bank => bank.name)}
       />
     </div>
   );
