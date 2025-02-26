@@ -1,7 +1,7 @@
 # HD44780 Custom Character Generator
 
 [![Live Demo](https://img.shields.io/badge/demo-live-green.svg)](https://niwciu.github.io/HD44780_CHAR_GENERATOR/)
-![License](https://img.shields.io/badge/license-MIT-blue)
+[![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 
 A web-based tool for creating custom characters and icon banks for HD44780-compatible LCD displays. Generates ready-to-use code for [LCD HD44780 lib - simple cross-platform C library](https://github.com/niwciu/LCD_HD44780).
 
