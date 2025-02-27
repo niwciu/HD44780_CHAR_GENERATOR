@@ -49,28 +49,29 @@ npm run dev
 ### Creating Characters
 
 - Click "Create New Char"
-- Name your character
-- Edit pixels using the 5x8 grid
-
-Changes will save automatically.
-
+- Name your character abd dclick OK
+- Edit pixels using the 5x8 grid - changes will save automatically.
 
 ### Managing Banks
 
 - Create character banks with "Create New Char Bank"
-- Add characters to banks using the ">" button
-- Banks support up to 8 characters each
+- Name your character bank and dclick OK
+- Select character bank on bank list that you want to add the char to.
+- Select char on char list that you want to add to the selectesd previously character bank.
+- Add selected char to selected bank using the ">" button
+
+NOTE: Each Characters Bank supports up to 8 characters.
 
 ### Generating Code
 
 - Configure characters and banks
 - Code preview updates automatically in right panel
-- Toggle comments using the checkbox
-- Copy or save to file generated code for use with LCD_HD44780 library using code preview buttons in right top corner.
+-  Add or remove comments from code using the "Add Comments" checkbox
+- Copy or save to file generated code for use with LCD_HD44780 library. For this purpose  use code preview menu  buttons in right top corner.
 
 ### Configuration Management
-You can reset, save to file and restore from saved file your def char configuration.  
-For this purpose you can use fallowing buttons: 
+You can reset, save to file and restore from saved file your custom characters configuration.  
+For this purpose use fallowing buttons: 
 
 - Save: Export current configuration as JSON file
 - Load: Import selected configurations from JSON file
