@@ -17,7 +17,7 @@
     width: 90%;
     background-color: #333;
     border-radius: 0.5vw;
-    height: 12.4vw;
+    height: 10vw;
     overflow-y: auto;
 }
 
@@ -26,9 +26,9 @@
     margin-top: 0.5vw;
     /* Użyj jednostki względnej dla marginesu */
     background-color: transparent;
-    padding-left: 1vw;
+    padding-left: 0.8vw;
     /* Użyj jednostki względnej dla paddingu */
-    padding-right: 1vw;
+    padding-right: 0.8vw;
     /* Użyj jednostki względnej dla paddingu */
 }
 
@@ -40,7 +40,7 @@
     background-color: #333;
     cursor: pointer;
     transition: background-color 0.3s ease;
-    font-size: 0.9vw;
+    font-size: 0.6vw;
     /* Użyj jednostki względnej dla rozmiaru czcionki */
 }
 
@@ -65,41 +65,31 @@
 .bank-list-button {
     width: 100%;
     max-width: 10vw;
-    /* Użyj jednostki względnej dla szerokości */
-    max-height: 2.0vw;
-    /* Użyj jednostki względnej dla wysokości */
+    max-height: 2vW;
     padding: 0.3vw;
-    /* Użyj jednostki względnej dla paddingu */
     background-color: #333;
     color: #ffffff;
     border: none;
     border-radius: 0.5vw;
-    /* Użyj jednostki względnej dla zaokrąglenia */
     cursor: pointer;
-    font-size: 0.9vw;
-    /* Użyj jednostki względnej dla rozmiaru czcionki */
+    font-size: 0.7vw;
     transition: background-color 0.3s ease;
     margin-top: 1vw;
-    /* margin-left: 0.3vw;
-    margin-right: 0.3vw; */
-    /* Użyj jednostki względnej dla marginesu */
 }
 
 .bank-list-button:hover {
     background-color: #555;
 }
 
-.hint-message {
-    padding: 1vw;
-    /* Użyj jednostki względnej dla paddingu */
+.bank-list-hint-message {
+    padding: 0.8vw;
+    height:6.4vw;
     color: #666;
     font-style: italic;
     text-align: center;
     border: 1px dashed #ccc;
     border-radius: 0.4vw;
-    /* Użyj jednostki względnej dla zaokrąglenia */
     margin: 1vw;
-    /* Użyj jednostki względnej dla marginesu */
-    font-size: 0.9vw;
-    /* Użyj jednostki względnej dla rozmiaru czcionki */
+    font-size: 0.68vw;
+
 }

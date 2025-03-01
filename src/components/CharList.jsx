@@ -15,7 +15,7 @@ const CharList = ({
             <h3>{title}</h3>
             <div className="char-list">
                 {chars.length === 0 ? (
-                    <div className="hint-message">
+                    <div className="char-list-hint-message ">
                         {isBankSelected !== undefined ? (
                             isBankSelected ? (
                                 "The selected bank is empty."

@@ -5,6 +5,11 @@
     /* Użyj jednostki względnej dla marginesu */
     padding-bottom: 0.5vw;
     /* Użyj jednostki względnej dla paddingu */
+    display: flex;
+    flex-direction: column; /* Ustawienie elementów w kolumnie */
+    justify-content: center; /* Wyśrodkowanie w poziomie */
+    align-items: center; /* Wyśrodkowanie w pionie */
+    
 }
 
 .char-list {
@@ -14,6 +19,10 @@
     border-radius: 0.5vw;
     height: 13vw;
     overflow-y: auto;
+    /* Wyśrodkowanie wielu elementów */
+    /* Wyśrodkowanie zawartości */
+
+    
 }
 
 .char-list-containter h3 {
@@ -21,7 +30,7 @@
     /* Użyj jednostki względnej dla marginesu */
     margin-bottom: 0.2vw;
     /* Użyj jednostki względnej dla marginesu */
-    font-size: 1.0vw;
+    font-size: 0.8vw;
     /* Użyj jednostki względnej dla rozmiaru czcionki */
     text-align: center;
 }
@@ -31,9 +40,9 @@
     margin-top: 0.5vw;
     /* Użyj jednostki względnej dla marginesu */
     background-color: transparent;
-    padding-left: 1vw;
+    padding-left: 0.8vw;
     /* Użyj jednostki względnej dla paddingu */
-    padding-right: 1vw;
+    padding-right: 0.8vw;
     /* Użyj jednostki względnej dla paddingu */
 }
 
@@ -45,7 +54,8 @@
     background-color: #333;
     cursor: pointer;
     transition: background-color 0.3s ease;
-    font-size: 0.9vw;
+    font-size: 0.6vw;
+    /* Użyj jednostki względnej dla rozmiaru czcionki */
 }
 
 .char-list li:hover {
@@ -61,8 +71,9 @@
     background-color: transparent;
     display: flex;
     flex-direction: row;
-    gap: 0.5vw;
+    gap: 0.3vw;
     /* Użyj jednostki względnej dla odstępów */
+    justify-content: center;
 }
 
 .char-list-button {
@@ -75,7 +86,7 @@
     border-radius: 0.5vw;
     /* Użyj jednostki względnej dla zaokrąglenia */
     cursor: pointer;
-    font-size: 0.9vw;
+    font-size: 0.7vw;
     /* Użyj jednostki względnej dla rozmiaru czcionki */
     transition: background-color 0.3s ease;
     margin-top: 0.8vh;
@@ -86,17 +97,14 @@
     background-color: #555;
 }
 
-.hint-message {
+.char-list-hint-message  {
     padding: 1vw;
-    /* Użyj jednostki względnej dla paddingu */
+    height:9.2vw;
     color: #666;
     font-style: italic;
     text-align: center;
     border: 1px dashed #ccc;
-    border-radius: 0.4vw;
-    /* Użyj jednostki względnej dla zaokrąglenia */
-    margin: 1vw;
-    /* Użyj jednostki względnej dla marginesu */
-    font-size: 0.9vw;
-    /* Użyj jednostki względnej dla rozmiaru czcionki */
+    border-radius: 0.3vw;
+    margin: 0.8vw;
+    font-size: 0.68vw;
 }
