@@ -54,7 +54,7 @@
     background-color: #333;
     cursor: pointer;
     transition: background-color 0.3s ease;
-    font-size: 0.6vw;
+    font-size: 0.65vw;
     /* Użyj jednostki względnej dla rozmiaru czcionki */
 }
 
@@ -99,7 +99,7 @@
 
 .char-list-hint-message  {
     padding: 1vw;
-    height:9.2vw;
+    /* height:9.2vw; */
     color: #666;
     font-style: italic;
     text-align: center;

@@ -84,7 +84,7 @@ const CodePreview = ({ code, fileName, onAddCommentsChange }) => {
                                 padding: "1vw",
                                 borderRadius: "1vw",
                                 overflowX: "auto",
-                                fontSize: "1.2vh",
+                                fontSize: "1.3vh",
                                 lineHeight: "1.5",
                                 margin: 0,
                             }}

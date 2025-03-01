@@ -14,29 +14,31 @@
 /* Styl dla samego modala */
 .modal {
     background-color: #1e1e1e;
-    padding: 1.5vw;
-    border-radius: 1vw;
+    padding: 0.8vw;
+    border-radius: 0.5vw;
     box-shadow: 0 0 1vw rgba(0, 0, 0, 0.5);
-    width: 40vh;
+    width: 18vw;
     text-align: center;
 }
 
 .modal h3 {
-    margin-bottom: 1.5vh;
+    /* background-color: #007bff; */
+    margin-bottom: 1.0vw;
+    margin-top: 0.0vw;
     color: #ffffff;
-    font-size: 2vh;
+    font-size: 0.9vw;
 }
 
 .modal input {
-    width: calc(100% - 2vw);
+    width: calc(100% - 1vw);
     /* Uwzględniamy padding */
-    padding: 0.5vw;
-    margin-bottom: 2vw;
-    border: 0.2vh solid #555;
+    padding: 0.4vw;
+    margin-bottom: 1vw;
+    border: 0.2vw solid #555;
     border-radius: 0.5vw;
     background-color: #333;
     color: #ffffff;
-    font-size: 1.8vh;
+    font-size: 0.7vw;
 }
 
 .modal input::placeholder {
@@ -47,7 +49,7 @@
     display: flex;
     justify-content: center;
     /* Przyciski wyśrodkowane w poziomie */
-    gap: 1.5vh;
+    gap: 1.0vw;
     /* Odstęp między przyciskami */
 }
 
@@ -55,13 +57,13 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 1vh 2vh;
+    padding: 0.3vw 0.3vw;
     border: none;
-    border-radius: 0.5vh;
+    border-radius: 0.4vw;
     cursor: pointer;
-    font-size: 2vh;
+    font-size: 0.8vw;
     transition: background-color 0.3s ease;
-    width: 18vh;
+    width: 18vw;
     /* Stała szerokość przycisków */
 }
 
@@ -89,9 +91,9 @@
 }
 
 .button-icon {
-    width: 3vh;
-    height: 3vh;
-    margin-right: 2vh;
+    width: 1.2vw;
+    height: 1.2vw;
+    margin-right: 1vw;
     /* Odstęp między ikoną a tekstem */
     color: inherit;
     /* Ikona dziedziczy kolor tekstu przycisku */

@@ -15,10 +15,8 @@ html {
   height: auto;
   overflow-x: auto;
   min-width: 1470px;
-  max-width: 75vw;
-  /* max-height: 70vh; */
-  /* width: 100vw; */
-  /* 420px + 1050px */
+  max-width: max(1470px,80vw);
+  /* max-width:  */
 }
 
 .left-column {

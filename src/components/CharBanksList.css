@@ -83,7 +83,7 @@
 
 .bank-list-hint-message {
     padding: 0.8vw;
-    height:6.4vw;
+    /* height:6.4vw; */
     color: #666;
     font-style: italic;
     text-align: center;

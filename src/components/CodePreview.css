@@ -9,7 +9,7 @@
     overflow: hidden;
     /* flex: 1 1 auto; */
     /* Elastyczne dopasowanie do kontenera */
-    max-height: 95vh;
+    max-height: 90vh;
     /* Minimalna wysokość względem viewportu */
     display: flex;
     flex-direction: column;
