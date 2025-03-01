@@ -14,14 +14,14 @@ html {
   display: flex;
   height: auto;
   overflow-x: auto;
-  min-width: 1470px;
-  max-width: max(1470px,80vw);
+  min-width: 800px;
+  /* max-width: max(1570px,80vw); */
   /* max-width:  */
 }
 
 .left-column {
-  flex: 1 1 28.5%;
-  min-width: 420px;
+  flex: 1 1 24.5%;
+  min-width: 196px;
   background-color: #1e1e1e;
   padding: 1.5vw;
   box-shadow: 2vw 0 5px rgba(0, 0, 0, 0.5);
@@ -32,8 +32,8 @@ html {
 }
 
 .right-column {
-  flex: 1 1 71.5%;
-  min-width: 1050px;
+  flex: 1 1 75.5%;
+  min-width: 604px;
   background: #1e1e1e;
   display: flex;
   flex-direction: column;
