@@ -12,7 +12,7 @@ const CharBanksList = ({
         <div className="bank-list-containter">
             <div className="bank-list">
                 {banks.length === 0 ? (
-                    <div className="hint-message">
+                    <div className="bank-list-hint-message">
                         No character banks created yet. Click &quot;Create New Char Bank&quot; to add one.
                     </div>
                 ) : (
