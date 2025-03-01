@@ -81,10 +81,10 @@ const CodePreview = ({ code, fileName, onAddCommentsChange }) => {
                             style={{
                                 ...style,
                                 background: "#1e1e1e",
-                                padding: "2vh",
-                                borderRadius: "2vh",
+                                padding: "1vw",
+                                borderRadius: "1vw",
                                 overflowX: "auto",
-                                fontSize: "1.9vh",
+                                fontSize: "1.2vh",
                                 lineHeight: "1.5",
                                 margin: 0,
                             }}
@@ -94,7 +94,7 @@ const CodePreview = ({ code, fileName, onAddCommentsChange }) => {
                                     <span
                                         style={{
                                             display: "inline-block",
-                                            width: "2em",
+                                            width: "1em",
                                             userSelect: "none",
                                             opacity: 0.5,
                                             paddingRight: "1em",

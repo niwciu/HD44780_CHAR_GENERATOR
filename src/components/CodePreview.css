@@ -28,7 +28,7 @@
 .file-title {
     color: #fff;
     margin: 0;
-    font-size: 1.1vw;
+    font-size: 0.85vw;
     /* Użyj jednostki względnej dla rozmiaru czcionki */
     font-family: 'SF Mono', 'Consolas', monospace;
     font-weight: 500;
@@ -36,7 +36,7 @@
 
 .toolbar-buttons {
     display: flex;
-    gap: 0.5vw;
+    gap: 0.4vw;
     /* Użyj jednostki względnej dla odstępów */
 }
 
@@ -50,9 +50,9 @@
 }
 .icon-button img,
 .icon-button svg {
-    width: 1.4vw;
+    width: 1.1vw;
     /* Użyj jednostki względnej */
-    height: 1.4vw;
+    height: 1.1vw;
     /* Użyj jednostki względnej */
 }
 
@@ -78,8 +78,8 @@
 }
 
 .toolbar-show-comments-checkobox {
-    width: 1.2vw;
-    height: 1.2vw;
+    width: 0.9vw;
+    height: 0.9vw;
     cursor: pointer;
 
 }
@@ -87,7 +87,7 @@
 .toolbar-show-comments-checkobox-label
 {
     margin-left: 0.3vw;
-    font-size: 1.1vw;
+    font-size: 0.85vw;
     color: olivedrab;
     position: relative;
     top: -0.1vw;
