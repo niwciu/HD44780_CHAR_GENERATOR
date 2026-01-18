@@ -17,6 +17,11 @@ const CodePreview = ({ code, fileName, onAddCommentsChange }) => {
     };
 
     const handleCopyCode = () => {
+        if (!navigator.clipboard?.writeText) {
+            alert('Clipboard API unavailable in this context.');
+            return;
+        }
+
         navigator.clipboard.writeText(code)
             .then(() => {
                 setCopied(true);
@@ -31,9 +36,14 @@ const CodePreview = ({ code, fileName, onAddCommentsChange }) => {
     const handleDownloadFile = () => {
         const blob = new Blob([code], { type: 'text/plain' });
         const link = document.createElement('a');
-        link.href = URL.createObjectURL(blob);
+        const url = URL.createObjectURL(blob);
+        link.href = url;
         link.download = fileName || "code.txt";
+        link.rel = 'noopener';
+        document.body.appendChild(link);
         link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
     };
 
     return (

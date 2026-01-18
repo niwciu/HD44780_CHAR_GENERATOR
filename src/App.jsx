@@ -1,5 +1,4 @@
-import { useState, useEffect, useCallback } from 'react'; 
-import PropTypes from 'prop-types';
+import { useState, useEffect, useCallback } from 'react';
 import './App.css';
 import HD44780Character from './components/HD44780Character';
 import CharNameModal from './components/CharNameModal';
@@ -56,6 +55,11 @@ function App() {
   const handleSaveChar = (charName) => {
     const trimmedName = charName.trim();
 
+    if (!trimmedName) {
+      alert('Character name cannot be empty.');
+      return;
+    }
+
     if (chars.some(char => char.name.toLowerCase() === trimmedName.toLowerCase())) {
       alert('This character name already exists!');
       return;
@@ -72,6 +76,11 @@ function App() {
 
   const handleSaveBank = (bankName) => {
     const trimmedName = bankName.trim();
+
+    if (!trimmedName) {
+      alert('Bank name cannot be empty.');
+      return;
+    }
 
     if (banks.some(bank => bank.name.toLowerCase() === trimmedName.toLowerCase())) {
       alert('This bank name already exists!');
@@ -130,7 +139,7 @@ function App() {
   };
 
   const handleUpdateCharPixels = (updatedPixels) => {
-    if (selectedChar !== null) {
+    if (selectedChar !== null && chars[selectedChar]) {
       const updatedChars = [...chars];
       updatedChars[selectedChar].pixels = updatedPixels;
       setChars(updatedChars);
@@ -238,11 +247,16 @@ function App() {
   };
 
   const validateConfig = (config) => {
+    if (!config || typeof config !== 'object') {
+      return false;
+    }
+
     return (
       config.version === 1 &&
       Array.isArray(config.chars) &&
       config.chars.every(char =>
         typeof char.name === 'string' &&
+        char.name.trim().length > 0 &&
         Array.isArray(char.pixels) &&
         char.pixels.length === 8 &&
         char.pixels.every(row =>
@@ -255,7 +269,12 @@ function App() {
       config.banks.every(bank =>
         typeof bank.name === 'string' &&
         Array.isArray(bank.characters) &&
-        bank.characters.every(index => Number.isInteger(index))
+        bank.characters.length <= 8 &&
+        bank.characters.every(index =>
+          Number.isInteger(index) &&
+          index >= 0 &&
+          index < config.chars.length
+        )
       )
     );
   };
@@ -281,6 +300,10 @@ function App() {
       const reader = new FileReader();
       reader.onload = (event) => {
         try {
+          if (typeof event.target.result !== 'string') {
+            throw new Error('Invalid file contents');
+          }
+
           const config = JSON.parse(event.target.result);
           const migratedConfig = migrateConfig(config);
 
@@ -301,13 +324,14 @@ function App() {
       };
 
       reader.readAsText(file);
+      input.value = '';
     };
     input.click();
   };
 
   const handleFutureFuncInfo = () => {
      alert("This functionality is not avaliable. \n\n Will be implemented in the future");
-  }
+  };
 
   return (
     <div className="app-container">
@@ -414,53 +438,5 @@ function App() {
     </div>
   );
 }
-
-
-App.propTypes = {
-
-  CodePreview: PropTypes.shape({
-    code: PropTypes.string,
-    fileName: PropTypes.string,
-    onAddCommentsChange: PropTypes.func
-  }),
-
-  CharNameModal: PropTypes.shape({
-    isOpen: PropTypes.bool,
-    onClose: PropTypes.func,
-    onSave: PropTypes.func,
-    existingNames: PropTypes.arrayOf(PropTypes.string)
-  }),
-
-  BankNameModal: PropTypes.shape({
-    isOpen: PropTypes.bool,
-    onClose: PropTypes.func,
-    onSave: PropTypes.func,
-    existingNames: PropTypes.arrayOf(PropTypes.string)
-  }),
-
-  CharList: PropTypes.shape({
-    title: PropTypes.string,
-    chars: PropTypes.arrayOf(PropTypes.object),
-    onSelectChar: PropTypes.func,
-    selectedChar: PropTypes.number,
-    onDeleteSelected: PropTypes.func,
-    onDeleteAll: PropTypes.func,
-    isBankSelected: PropTypes.bool
-  }),
-
-  CharBanksList: PropTypes.shape({
-    banks: PropTypes.arrayOf(PropTypes.object),
-    onSelectBank: PropTypes.func,
-    selectedBank: PropTypes.number,
-    onDeleteSelected: PropTypes.func,
-    onDeleteAll: PropTypes.func
-  }),
-
-  HD44780Character: PropTypes.shape({
-    isActive: PropTypes.bool,
-    pixels: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.bool)),
-    onUpdatePixels: PropTypes.func
-  })
-};
 
 export default App;
