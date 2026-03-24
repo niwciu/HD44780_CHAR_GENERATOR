@@ -19,6 +19,10 @@ html {
   /* max-width:  */
 }
 
+.app-shell {
+  min-height: 100vh;
+}
+
 .left-column {
   flex: 1 1 24.5%;
   min-width: 196px;
@@ -146,7 +150,8 @@ html {
   white-space: pre-wrap;
 }
 
-.tooltip-container:hover .tooltip-text {
+.tooltip-container:hover .tooltip-text,
+.add-char-to-bank-button-container:hover .tooltip-text {
   visibility: visible;
   opacity: 1;
 }

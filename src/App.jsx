@@ -1,5 +1,4 @@
-import { useState, useEffect, useCallback } from 'react'; 
-import PropTypes from 'prop-types';
+import { useEffect, useRef, useState } from 'react';
 import './App.css';
 import HD44780Character from './components/HD44780Character';
 import CharNameModal from './components/CharNameModal';
@@ -7,266 +6,243 @@ import BankNameModal from './components/BankNameModal';
 import CharList from './components/CharList';
 import CharBanksList from './components/CharBanksList';
 import CodePreview from './components/CodePreview';
+import FileNameModal from './components/FileNameModal';
+import ToastViewport from './components/ToastViewport';
 import { generateCode } from './components/CodeGenerator';
+import { usePersistentCharConfig } from './hooks/usePersistentCharConfig';
+import {
+  addCharToBank,
+  clearBankChars,
+  clearGlobalChars,
+  deleteBank,
+  deleteBankChar,
+  deleteGlobalChar,
+  getBankDisplayChars,
+  updateCharPixels,
+} from './utils/charBankState';
+import {
+  createEmptyBank,
+  createEmptyChar,
+  createEmptyPixels,
+  DEFAULT_CONFIG_FILE_NAME,
+  parseConfig,
+} from './utils/config';
 
 function App() {
-  const [isCharModalOpen, setisCharModalOpen] = useState(false);
-  const [chars, setChars] = useState([]);
+  const {
+    chars,
+    setChars,
+    banks,
+    setBanks,
+    storageError,
+    setStorageError,
+    replaceConfig,
+    resetConfig,
+    createSnapshot,
+  } = usePersistentCharConfig();
+
+  const emptyPixels = createEmptyPixels();
+  const [isCharModalOpen, setIsCharModalOpen] = useState(false);
   const [selectedChar, setSelectedChar] = useState(null);
-  const [isBankModalOpen, setisBankModalOpen] = useState(false);
-  const [banks, setBanks] = useState([]);
+  const [isBankModalOpen, setIsBankModalOpen] = useState(false);
   const [selectedBank, setSelectedBank] = useState(null);
   const [selectedBankChar, setSelectedBankChar] = useState(null);
-  const [generatedCode, setGeneratedCode] = useState("");
+  const [generatedCode, setGeneratedCode] = useState('');
   const [addComments, setAddComments] = useState(true);
-
-  const handleCodeGeneration = useCallback(() => {
-    if (addComments) {
-      console.log("Generating code with comments...");
-    } else {
-      console.log("Generating code without comments...");
-    }
-    generateCode(chars, banks, addComments, setGeneratedCode);
-  }, [chars, banks, addComments, setGeneratedCode]); 
+  const [isFileNameModalOpen, setIsFileNameModalOpen] = useState(false);
+  const [toasts, setToasts] = useState([]);
+  const toastIdRef = useRef(0);
 
   useEffect(() => {
-    handleCodeGeneration();
-  }, [handleCodeGeneration]);
+    generateCode(chars, banks, addComments, setGeneratedCode);
+  }, [chars, banks, addComments]);
+
+  useEffect(() => {
+    if (!storageError) {
+      return;
+    }
+
+    showToast('warning', 'Saved draft could not be restored.', storageError);
+    setStorageError(null);
+  }, [setStorageError, storageError]);
+
+  const showToast = (type, title, message = '') => {
+    const id = toastIdRef.current + 1;
+    toastIdRef.current = id;
+
+    setToasts((prevToasts) => [...prevToasts, { id, type, title, message }]);
+    window.setTimeout(() => {
+      setToasts((prevToasts) => prevToasts.filter((toast) => toast.id !== id));
+    }, 3200);
+  };
+
+  const dismissToast = (id) => {
+    setToasts((prevToasts) => prevToasts.filter((toast) => toast.id !== id));
+  };
 
   const handleAddCommentsChange = (newValue) => {
     setAddComments(newValue);
   };
 
-  const handleCreateNewChar = () => {
-    setisCharModalOpen(true);
-  };
-
-  const handleCloseCharModal = () => {
-    setisCharModalOpen(false);
-  };
-
-  const handleCreateNewBank = () => {
-    setisBankModalOpen(true);
-  };
-
-  const handleCloseBankModal = () => {
-    setisBankModalOpen(false);
-  };
-
   const handleSaveChar = (charName) => {
     const trimmedName = charName.trim();
 
-    if (chars.some(char => char.name.toLowerCase() === trimmedName.toLowerCase())) {
-      alert('This character name already exists!');
+    if (!trimmedName) {
+      showToast('warning', 'Character name is required.');
       return;
     }
 
-    const newChar = {
-      name: trimmedName,
-      pixels: Array(8).fill().map(() => Array(5).fill(false))
-    };
+    if (chars.some((char) => char.name.toLowerCase() === trimmedName.toLowerCase())) {
+      showToast('warning', 'Character name already exists.', 'Choose a different name.');
+      return;
+    }
 
-    setChars([...chars, newChar]);
-    handleCloseCharModal();
+    setChars((prevChars) => [...prevChars, createEmptyChar(trimmedName)]);
+    setIsCharModalOpen(false);
+    showToast('success', 'Character created.', `"${trimmedName}" is ready to edit.`);
   };
 
   const handleSaveBank = (bankName) => {
     const trimmedName = bankName.trim();
 
-    if (banks.some(bank => bank.name.toLowerCase() === trimmedName.toLowerCase())) {
-      alert('This bank name already exists!');
+    if (!trimmedName) {
+      showToast('warning', 'Bank name is required.');
       return;
     }
 
-    const newBank = {
-      name: trimmedName,
-      characters: []
-    };
+    if (banks.some((bank) => bank.name.toLowerCase() === trimmedName.toLowerCase())) {
+      showToast('warning', 'Bank name already exists.', 'Choose a different name.');
+      return;
+    }
 
-    setBanks([...banks, newBank]);
-    handleCloseBankModal();
+    setBanks((prevBanks) => [...prevBanks, createEmptyBank(trimmedName)]);
+    setIsBankModalOpen(false);
+    showToast('success', 'Character bank created.', `"${trimmedName}" is ready to use.`);
   };
 
   const handleAddCharToBank = () => {
     if (selectedChar === null || selectedBank === null) {
-      alert("Please select both a character and a bank");
+      showToast('warning', 'Select both a character and a bank first.');
       return;
     }
 
-    setBanks(prevBanks => {
-      return prevBanks.map((bank, index) => {
-        if (index === selectedBank) {
-          if (bank.characters.length >= 8) {
-            alert("Bank is full! Maximum 8 characters allowed.");
-            return bank;
-          }
+    const bank = banks[selectedBank];
+    if (!bank) {
+      showToast('error', 'Selected bank is no longer available.');
+      return;
+    }
 
-          if (bank.characters.includes(selectedChar)) {
-            alert("This character already exists in the selected bank");
-            return bank;
-          }
+    if (bank.characters.length >= 8) {
+      showToast('warning', 'Bank is full.', 'Each bank can store up to 8 characters.');
+      return;
+    }
 
-          return {
-            ...bank,
-            characters: [...bank.characters, selectedChar]
-          };
-        }
-        return bank;
-      });
-    });
-  };
+    if (bank.characters.includes(selectedChar)) {
+      showToast('warning', 'Character already exists in the selected bank.');
+      return;
+    }
 
-  const handleSelectChar = (index) => {
-    setSelectedChar(index);
-  };
-
-  const handleSelectBank = (index) => {
-    setSelectedBank(index);
-    setSelectedBankChar(null);
-  };
-
-  const handleSelectBankChar = (index) => {
-    setSelectedBankChar(index);
+    setBanks((prevBanks) => addCharToBank(prevBanks, selectedBank, selectedChar));
+    showToast('success', 'Character added to bank.');
   };
 
   const handleUpdateCharPixels = (updatedPixels) => {
-    if (selectedChar !== null) {
-      const updatedChars = [...chars];
-      updatedChars[selectedChar].pixels = updatedPixels;
-      setChars(updatedChars);
+    if (selectedChar === null) {
+      return;
     }
+
+    setChars((prevChars) => updateCharPixels(prevChars, selectedChar, updatedPixels));
   };
 
   const handleDeleteItem = (type, index) => {
     if (type === 'global') {
-      const updatedChars = chars.filter((_, i) => i !== index);
-      setChars(updatedChars);
-
-      setBanks(prevBanks =>
-        prevBanks.map(bank => ({
-          ...bank,
-          characters: bank.characters
-            .filter(charIndex => charIndex !== index)
-            .map(charIndex => charIndex > index ? charIndex - 1 : charIndex)
-        }))
-      );
-      setSelectedChar(null);
-    }
-    else if (type === 'bank' && selectedBank !== null) {
-      setBanks(prevBanks =>
-        prevBanks.map((bank, i) => {
-          if (i === selectedBank) {
-            return {
-              ...bank,
-              characters: bank.characters.filter((_, idx) => idx !== index)
-            };
-          }
-          return bank;
-        })
-      );
+      const nextState = deleteGlobalChar(chars, banks, selectedChar, index);
+      setChars(nextState.chars);
+      setBanks(nextState.banks);
+      setSelectedChar(nextState.selectedChar);
       setSelectedBankChar(null);
+      showToast('info', 'Character deleted.');
+      return;
+    }
+
+    if (type === 'bank' && selectedBank !== null) {
+      setBanks((prevBanks) => deleteBankChar(prevBanks, selectedBank, index));
+      setSelectedBankChar(null);
+      showToast('info', 'Character removed from bank.');
     }
   };
 
   const handleDeleteAll = (type) => {
     if (type === 'global') {
-      setChars([]);
-      setBanks(prevBanks => prevBanks.map(bank => ({
-        ...bank,
-        characters: []
-      })));
+      const nextState = clearGlobalChars(banks);
+      setChars(nextState.chars);
+      setBanks(nextState.banks);
       setSelectedChar(null);
       setSelectedBankChar(null);
+      showToast('info', 'All characters deleted.');
+      return;
     }
-    else if (type === 'bank' && selectedBank !== null) {
-      setBanks(prevBanks => prevBanks.map((bank, i) => {
-        if (i === selectedBank) {
-          return { ...bank, characters: [] };
-        }
-        return bank;
-      }));
+
+    if (type === 'bank' && selectedBank !== null) {
+      setBanks((prevBanks) => clearBankChars(prevBanks, selectedBank));
       setSelectedBankChar(null);
+      showToast('info', 'Selected bank cleared.');
     }
   };
 
   const handleDeleteBank = (index) => {
-    if (index === null) return;
-
-    setBanks(prev => prev.filter((_, i) => i !== index));
-
-    if (selectedBank === index) {
-      setSelectedBank(null);
-      setSelectedBankChar(null);
+    if (index === null) {
+      return;
     }
+
+    const nextState = deleteBank(banks, selectedBank, index);
+    setBanks(nextState.banks);
+    setSelectedBank(nextState.selectedBank);
+    setSelectedBankChar(null);
+    showToast('info', 'Character bank deleted.');
   };
 
   const handleDeleteAllBanks = () => {
     setBanks([]);
     setSelectedBank(null);
     setSelectedBankChar(null);
+    showToast('info', 'All character banks deleted.');
   };
 
   const handleResetAll = () => {
-    handleDeleteAllBanks();
-    handleDeleteAll('global');
-    handleDeleteAll('bank');
+    resetConfig();
+    setSelectedChar(null);
+    setSelectedBank(null);
+    setSelectedBankChar(null);
+    showToast('info', 'Workspace reset.', 'All characters and banks were cleared.');
   };
 
-  const handleSaveConfigToFile = () => {
-    const config = {
-      version: 1,
-      chars: chars,
-      banks: banks
-    };
-
-    const fileName = prompt("Enter configuration file name:", "hd44780_config");
-    if (!fileName) return;
-
-    const fullFileName = fileName.endsWith('.json') ? fileName : `${fileName}.json`;
-
-    const json = JSON.stringify(config, null, 2);
-    const blob = new Blob([json], { type: "application/json" });
+  const downloadTextFile = (content, fileName, mimeType) => {
+    const blob = new Blob([content], { type: mimeType });
     const url = URL.createObjectURL(blob);
-
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = fullFileName;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
+    const anchor = document.createElement('a');
+    anchor.href = url;
+    anchor.download = fileName;
+    document.body.appendChild(anchor);
+    anchor.click();
+    document.body.removeChild(anchor);
     URL.revokeObjectURL(url);
   };
 
-  const validateConfig = (config) => {
-    return (
-      config.version === 1 &&
-      Array.isArray(config.chars) &&
-      config.chars.every(char =>
-        typeof char.name === 'string' &&
-        Array.isArray(char.pixels) &&
-        char.pixels.length === 8 &&
-        char.pixels.every(row =>
-          Array.isArray(row) &&
-          row.length === 5 &&
-          row.every(p => typeof p === 'boolean')
-        )
-      ) &&
-      Array.isArray(config.banks) &&
-      config.banks.every(bank =>
-        typeof bank.name === 'string' &&
-        Array.isArray(bank.characters) &&
-        bank.characters.every(index => Number.isInteger(index))
-      )
-    );
+  const handleSaveConfigToFile = () => {
+    setIsFileNameModalOpen(true);
   };
 
-  const migrateConfig = (config) => {
-    switch (config.version) {
-      case 1:
-        return config;
-      default:
-        throw new Error("Unsupported config version");
-    }
+  const handleDownloadConfigFile = (fileName) => {
+    const normalizedFileName = fileName.endsWith('.json') ? fileName : `${fileName}.json`;
+    const snapshot = createSnapshot();
+    downloadTextFile(
+      JSON.stringify(snapshot, null, 2),
+      normalizedFileName,
+      'application/json',
+    );
+    setIsFileNameModalOpen(false);
+    showToast('success', 'Configuration exported.', `Saved as ${normalizedFileName}.`);
   };
 
   const handleReadConfigFromFile = () => {
@@ -274,193 +250,158 @@ function App() {
     input.type = 'file';
     input.accept = '.json';
 
-    input.onchange = (e) => {
-      const file = e.target.files[0];
-      if (!file) return;
+    input.onchange = (event) => {
+      const file = event.target.files?.[0];
+      if (!file) {
+        return;
+      }
 
       const reader = new FileReader();
-      reader.onload = (event) => {
+      reader.onload = (loadEvent) => {
         try {
-          const config = JSON.parse(event.target.result);
-          const migratedConfig = migrateConfig(config);
-
-          if (!validateConfig(migratedConfig)) {
-            throw new Error("Invalid configuration structure");
-          }
-
+          const nextConfig = parseConfig(loadEvent.target?.result ?? '');
+          replaceConfig(nextConfig);
           setSelectedChar(null);
           setSelectedBank(null);
           setSelectedBankChar(null);
-
-          setChars(migratedConfig.chars);
-          setBanks(migratedConfig.banks);
-
+          showToast('success', 'Configuration imported.', `${file.name} loaded successfully.`);
         } catch (error) {
-          alert("Error loading configuration: " + error.message);
+          showToast('error', 'Import failed.', error.message);
         }
       };
 
       reader.readAsText(file);
     };
+
     input.click();
   };
 
   const handleFutureFuncInfo = () => {
-     alert("This functionality is not avaliable. \n\n Will be implemented in the future");
-  }
+    showToast(
+      'info',
+      'Feature not available yet.',
+      'The special character base will be implemented in a future update.',
+    );
+  };
+
+  const bankDisplayChars = getBankDisplayChars(banks, selectedBank, chars);
 
   return (
-    <div className="app-container">
-      <div className="left-column">
-        <div className="left-column-row">
-          <button className="create-new-char-button" onClick={handleCreateNewChar}>
-            Create New Char
-          </button>
-          <button className="create-new-char-button" onClick={handleCreateNewBank}>
-            Create New Char Bank
-          </button>
-        </div>
-        <div className="left-column-row">
-          <HD44780Character
-            isActive={selectedChar !== null}
-            pixels={selectedChar !== null ? chars[selectedChar].pixels : Array(8).fill().map(() => Array(5).fill(false))}
-            onUpdatePixels={handleUpdateCharPixels}
-          />
-          <CharBanksList
-            banks={banks}
-            onSelectBank={handleSelectBank}
-            selectedBank={selectedBank}
-            onDeleteSelected={() => handleDeleteBank(selectedBank)}
-            onDeleteAll={handleDeleteAllBanks}
-          />
-        </div>
-        <div className="left-column-row">
-          <CharList
-            title={'Created Chars'}
-            chars={chars}
-            onSelectChar={handleSelectChar}
-            selectedChar={selectedChar}
-            onDeleteSelected={(index) => handleDeleteItem('global', index)}
-            onDeleteAll={() => handleDeleteAll('global')}
-          />
-          <div className="add-char-to-bank-button-container ">
-            <button
-              className="add-char-to-bank-button"
-              onClick={handleAddCharToBank}
-              disabled={selectedChar === null || selectedBank === null}
-            >
-              &gt;
+    <div className="app-shell">
+      <ToastViewport toasts={toasts} onDismiss={dismissToast} />
+      <div className="app-container">
+        <div className="left-column">
+          <div className="left-column-row">
+            <button className="create-new-char-button" onClick={() => setIsCharModalOpen(true)}>
+              Create New Char
             </button>
-            {(selectedChar === null || selectedBank === null) && (
-              <div className="tooltip-text">
-                {selectedChar === null && "Select a character to add\n"}
-                {selectedBank === null && "Select a target bank"}
-              </div>
-            )}
+            <button className="create-new-char-button" onClick={() => setIsBankModalOpen(true)}>
+              Create New Char Bank
+            </button>
           </div>
-          <CharList
-            title={'Selected Bank Chars'}
-            chars={
-              selectedBank !== null && banks[selectedBank]
-                ? banks[selectedBank].characters
-                  .filter(charIndex => charIndex < chars.length)
-                  .map(charIndex => chars[charIndex])
-                : []
-            }
-            onSelectChar={handleSelectBankChar}
-            selectedChar={selectedBankChar}
-            onDeleteSelected={(index) => handleDeleteItem('bank', index)}
-            onDeleteAll={() => handleDeleteAll('bank')}
-            isBankSelected={selectedBank !== null}
+          <div className="left-column-row">
+            <HD44780Character
+              isActive={selectedChar !== null}
+              pixels={selectedChar !== null ? chars[selectedChar].pixels : emptyPixels}
+              onUpdatePixels={handleUpdateCharPixels}
+            />
+            <CharBanksList
+              banks={banks}
+              onSelectBank={(index) => {
+                setSelectedBank(index);
+                setSelectedBankChar(null);
+              }}
+              selectedBank={selectedBank}
+              onDeleteSelected={() => handleDeleteBank(selectedBank)}
+              onDeleteAll={handleDeleteAllBanks}
+            />
+          </div>
+          <div className="left-column-row">
+            <CharList
+              title="Created Chars"
+              chars={chars}
+              onSelectChar={(index) => {
+                setSelectedChar(index);
+                setSelectedBankChar(null);
+              }}
+              selectedChar={selectedChar}
+              onDeleteSelected={(index) => handleDeleteItem('global', index)}
+              onDeleteAll={() => handleDeleteAll('global')}
+            />
+            <div className="add-char-to-bank-button-container">
+              <button
+                className="add-char-to-bank-button"
+                onClick={handleAddCharToBank}
+                disabled={selectedChar === null || selectedBank === null}
+              >
+                &gt;
+              </button>
+              {(selectedChar === null || selectedBank === null) && (
+                <div className="tooltip-text">
+                  {selectedChar === null && 'Select a character to add\n'}
+                  {selectedBank === null && 'Select a target bank'}
+                </div>
+              )}
+            </div>
+            <CharList
+              title="Selected Bank Chars"
+              chars={bankDisplayChars}
+              onSelectChar={setSelectedBankChar}
+              selectedChar={selectedBankChar}
+              onDeleteSelected={(index) => handleDeleteItem('bank', index)}
+              onDeleteAll={() => handleDeleteAll('bank')}
+              isBankSelected={selectedBank !== null}
+            />
+          </div>
+          <div className="left-column-row">
+            <button className="create-new-char-button" onClick={handleSaveConfigToFile}>
+              Save conf
+            </button>
+            <button className="create-new-char-button" onClick={handleReadConfigFromFile}>
+              Load conf
+            </button>
+            <button className="create-new-char-button" onClick={handleResetAll}>
+              Reset all
+            </button>
+          </div>
+          <div className="left-column-row">
+            <button className="create-new-char-button" onClick={handleFutureFuncInfo}>
+              Copy char from application special characters base
+            </button>
+          </div>
+        </div>
+        <div className="right-column">
+          <CodePreview
+            code={generatedCode}
+            fileName="lcd_hd44780_def_char.h"
+            onAddCommentsChange={handleAddCommentsChange}
+            onCopySuccess={() => showToast('success', 'Code copied to clipboard.')}
+            onCopyError={(message) => showToast('error', 'Copy failed.', message)}
+            onDownloadSuccess={(fileName) => showToast('success', 'Code file downloaded.', fileName)}
           />
         </div>
-        <div className="left-column-row">
-          <button className="create-new-char-button" onClick={handleSaveConfigToFile}>
-            Save conf
-          </button>
-          <button className="create-new-char-button" onClick={handleReadConfigFromFile}>
-            Load conf
-          </button>
-          <button className="create-new-char-button" onClick={handleResetAll}>
-            Reset all
-          </button>
-        </div>
-        <div className="left-column-row">
-          <button className="create-new-char-button" onClick={handleFutureFuncInfo}>
-            Copy char from application special characters base
-          </button>
-        </div>
-      </div>
-      <div className="right-column">
-        <CodePreview
-          code={generatedCode}
-          fileName="lcd_hd44780_def_char.h"
-          onAddCommentsChange={handleAddCommentsChange}
-        />
       </div>
 
       <CharNameModal
         isOpen={isCharModalOpen}
-        onClose={handleCloseCharModal}
+        onClose={() => setIsCharModalOpen(false)}
         onSave={handleSaveChar}
-        existingNames={chars.map(char => char.name)}
+        existingNames={chars.map((char) => char.name)}
       />
       <BankNameModal
         isOpen={isBankModalOpen}
-        onClose={handleCloseBankModal}
+        onClose={() => setIsBankModalOpen(false)}
         onSave={handleSaveBank}
-        existingNames={banks.map(bank => bank.name)}
+        existingNames={banks.map((bank) => bank.name)}
+      />
+      <FileNameModal
+        isOpen={isFileNameModalOpen}
+        initialValue={DEFAULT_CONFIG_FILE_NAME}
+        onClose={() => setIsFileNameModalOpen(false)}
+        onSave={handleDownloadConfigFile}
       />
     </div>
   );
 }
-
-
-App.propTypes = {
-
-  CodePreview: PropTypes.shape({
-    code: PropTypes.string,
-    fileName: PropTypes.string,
-    onAddCommentsChange: PropTypes.func
-  }),
-
-  CharNameModal: PropTypes.shape({
-    isOpen: PropTypes.bool,
-    onClose: PropTypes.func,
-    onSave: PropTypes.func,
-    existingNames: PropTypes.arrayOf(PropTypes.string)
-  }),
-
-  BankNameModal: PropTypes.shape({
-    isOpen: PropTypes.bool,
-    onClose: PropTypes.func,
-    onSave: PropTypes.func,
-    existingNames: PropTypes.arrayOf(PropTypes.string)
-  }),
-
-  CharList: PropTypes.shape({
-    title: PropTypes.string,
-    chars: PropTypes.arrayOf(PropTypes.object),
-    onSelectChar: PropTypes.func,
-    selectedChar: PropTypes.number,
-    onDeleteSelected: PropTypes.func,
-    onDeleteAll: PropTypes.func,
-    isBankSelected: PropTypes.bool
-  }),
-
-  CharBanksList: PropTypes.shape({
-    banks: PropTypes.arrayOf(PropTypes.object),
-    onSelectBank: PropTypes.func,
-    selectedBank: PropTypes.number,
-    onDeleteSelected: PropTypes.func,
-    onDeleteAll: PropTypes.func
-  }),
-
-  HD44780Character: PropTypes.shape({
-    isActive: PropTypes.bool,
-    pixels: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.bool)),
-    onUpdatePixels: PropTypes.func
-  })
-};
 
 export default App;

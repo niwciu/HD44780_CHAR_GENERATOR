@@ -1,0 +1,89 @@
+.dialog-overlay {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(7, 10, 14, 0.72);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 24px;
+}
+
+.dialog-card {
+    width: min(360px, 100%);
+    background: linear-gradient(180deg, #20252d 0%, #161a20 100%);
+    border: 1px solid #39424f;
+    border-radius: 16px;
+    box-shadow: 0 18px 48px rgba(0, 0, 0, 0.45);
+    padding: 24px;
+    text-align: left;
+}
+
+.dialog-card h3 {
+    margin: 0 0 10px;
+    color: #f4f7fb;
+    font-size: 1.15rem;
+}
+
+.dialog-description {
+    margin: 0 0 16px;
+    color: #b8c3d1;
+    font-size: 0.95rem;
+}
+
+.dialog-card input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 12px 14px;
+    margin-bottom: 16px;
+    border: 1px solid #4a5668;
+    border-radius: 12px;
+    background-color: #10141a;
+    color: #f4f7fb;
+    font-size: 0.95rem;
+}
+
+.dialog-card input::placeholder {
+    color: #728095;
+}
+
+.dialog-buttons {
+    display: flex;
+    gap: 12px;
+}
+
+.dialog-buttons button {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px 14px;
+    border: none;
+    border-radius: 12px;
+    font-size: 0.95rem;
+}
+
+.dialog-buttons button:first-child {
+    background: #353d49;
+    color: #f4f7fb;
+}
+
+.dialog-buttons button:first-child:hover {
+    background: #455061;
+}
+
+.dialog-buttons button:last-child {
+    background: #2d8cff;
+    color: #ffffff;
+}
+
+.dialog-buttons button:last-child:hover {
+    background: #1976e5;
+}
+
+.dialog-buttons button:disabled {
+    background: #2a313c;
+    color: #778395;
+    cursor: not-allowed;
+}

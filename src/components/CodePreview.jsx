@@ -4,7 +4,14 @@ import { Clipboard, Download } from "lucide-react";
 import { Highlight, themes } from "prism-react-renderer";
 import "./CodePreview.css";
 
-const CodePreview = ({ code, fileName, onAddCommentsChange }) => {
+const CodePreview = ({
+    code,
+    fileName,
+    onAddCommentsChange,
+    onCopySuccess,
+    onCopyError,
+    onDownloadSuccess,
+}) => {
     const [copied, setCopied] = useState(false);
     const [addComments, setAddComments] = useState(true);
 
@@ -21,19 +28,23 @@ const CodePreview = ({ code, fileName, onAddCommentsChange }) => {
             .then(() => {
                 setCopied(true);
                 setTimeout(() => setCopied(false), 2000);
+                onCopySuccess?.();
             })
             .catch(err => {
                 console.error('Failed to copy text:', err);
-                alert('Failed to copy code to clipboard');
+                onCopyError?.(err.message);
             });
     };
 
     const handleDownloadFile = () => {
         const blob = new Blob([code], { type: 'text/plain' });
+        const objectUrl = URL.createObjectURL(blob);
         const link = document.createElement('a');
-        link.href = URL.createObjectURL(blob);
+        link.href = objectUrl;
         link.download = fileName || "code.txt";
         link.click();
+        URL.revokeObjectURL(objectUrl);
+        onDownloadSuccess?.(link.download);
     };
 
     return (
@@ -121,11 +132,17 @@ CodePreview.propTypes = {
     code: PropTypes.string.isRequired,
     fileName: PropTypes.string,
     onAddCommentsChange: PropTypes.func,
+    onCopySuccess: PropTypes.func,
+    onCopyError: PropTypes.func,
+    onDownloadSuccess: PropTypes.func,
 };
 
 CodePreview.defaultProps = {
     fileName: "lcd_hd44780_def_char.h",
     onAddCommentsChange: null,
+    onCopySuccess: null,
+    onCopyError: null,
+    onDownloadSuccess: null,
 };
 
 export default CodePreview;
