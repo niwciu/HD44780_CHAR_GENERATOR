@@ -81,8 +81,6 @@ html {
   /* Jaśniejszy odcień po najechaniu */
 }
 
-
-/* Styl dla overlay modala */
 .modal-overlay {
   position: fixed;
   top: 0;

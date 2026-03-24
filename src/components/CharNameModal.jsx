@@ -1,10 +1,18 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { FaTimes as CancelIcon, FaCheck as OkIcon } from 'react-icons/fa';
 import './CharNameModal.css';
 
 const CharNameModal = ({ isOpen, onClose, onSave, existingNames }) => {
     const [newCharName, setNewCharName] = useState('');
+    const inputRef = useRef(null);
+
+    useEffect(() => {
+        if (isOpen) {
+            setNewCharName('');
+            window.setTimeout(() => inputRef.current?.focus(), 0);
+        }
+    }, [isOpen]);
 
     const handleNameChange = (event) => {
         setNewCharName(event.target.value);
@@ -34,10 +42,19 @@ const CharNameModal = ({ isOpen, onClose, onSave, existingNames }) => {
                     type="text"
                     placeholder="Enter name"
                     value={newCharName}
+                    ref={inputRef}
                     onChange={handleNameChange}
+                    onKeyDown={(event) => {
+                        if (event.key === 'Enter' && newCharName.trim().length > 0) {
+                            handleOk();
+                        }
+                    }}
                 />
                 <div className="modal-buttons">
-                    <button onClick={onClose}>
+                    <button onClick={() => {
+                        setNewCharName('');
+                        onClose();
+                    }}>
                         <CancelIcon className="button-icon" />
                         Cancel
                     </button>

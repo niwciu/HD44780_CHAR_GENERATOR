@@ -1,10 +1,18 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { FaTimes as CancelIcon, FaCheck as OkIcon } from 'react-icons/fa';
 import './BankNameModal.css';
 
 const BankNameModal = ({ isOpen, onClose, onSave, existingNames }) => {
     const [newBankName, setNewBankName] = useState('');
+    const inputRef = useRef(null);
+
+    useEffect(() => {
+        if (isOpen) {
+            setNewBankName('');
+            window.setTimeout(() => inputRef.current?.focus(), 0);
+        }
+    }, [isOpen]);
 
     const handleNameChange = (event) => {
         setNewBankName(event.target.value);
@@ -34,10 +42,19 @@ const BankNameModal = ({ isOpen, onClose, onSave, existingNames }) => {
                     type="text"
                     placeholder="Enter name"
                     value={newBankName}
+                    ref={inputRef}
                     onChange={handleNameChange}
+                    onKeyDown={(event) => {
+                        if (event.key === 'Enter' && newBankName.trim().length > 0) {
+                            handleOk();
+                        }
+                    }}
                 />
                 <div className="modal-buttons">
-                    <button onClick={onClose}>
+                    <button onClick={() => {
+                        setNewBankName('');
+                        onClose();
+                    }}>
                         <CancelIcon className="button-icon" />
                         Cancel
                     </button>

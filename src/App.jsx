@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import './App.css';
 import HD44780Character from './components/HD44780Character';
 import CharNameModal from './components/CharNameModal';
@@ -41,7 +41,7 @@ function App() {
     createSnapshot,
   } = usePersistentCharConfig();
 
-  const emptyPixels = createEmptyPixels();
+  const emptyPixels = useMemo(() => createEmptyPixels(), []);
   const [isCharModalOpen, setIsCharModalOpen] = useState(false);
   const [selectedChar, setSelectedChar] = useState(null);
   const [isBankModalOpen, setIsBankModalOpen] = useState(false);
@@ -97,7 +97,12 @@ function App() {
       return;
     }
 
-    setChars((prevChars) => [...prevChars, createEmptyChar(trimmedName)]);
+    setChars((prevChars) => {
+      const nextIndex = prevChars.length;
+      setSelectedChar(nextIndex);
+      setSelectedBankChar(null);
+      return [...prevChars, createEmptyChar(trimmedName)];
+    });
     setIsCharModalOpen(false);
     showToast('success', 'Character created.', `"${trimmedName}" is ready to edit.`);
   };
@@ -115,7 +120,12 @@ function App() {
       return;
     }
 
-    setBanks((prevBanks) => [...prevBanks, createEmptyBank(trimmedName)]);
+    setBanks((prevBanks) => {
+      const nextIndex = prevBanks.length;
+      setSelectedBank(nextIndex);
+      setSelectedBankChar(null);
+      return [...prevBanks, createEmptyBank(trimmedName)];
+    });
     setIsBankModalOpen(false);
     showToast('success', 'Character bank created.', `"${trimmedName}" is ready to use.`);
   };
@@ -288,7 +298,7 @@ function App() {
 
   return (
     <div className="app-shell">
-      <ToastViewport toasts={toasts} onDismiss={dismissToast} />
+          <ToastViewport toasts={toasts} onDismiss={dismissToast} />
       <div className="app-container">
         <div className="left-column">
           <div className="left-column-row">
